@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.robotiktechnology.myhebdobox" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" aaaxmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.robotiktechnology.myhebdobox" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- xmlns:cdv="http://cordova.apache.org/ns/1.0" -->
     <name>MyHebdoBox</name>
     <description>
         MyHebdoBox
@@ -39,7 +40,7 @@
 	<plugin name="cordova-plugin-file-transfer" spec="1.6.0" source="npm" />
 	
 	<plugin name="cordova-plugin-whitelist" spec="1.3.0" source="npm" />
-    <icon src="icon.png" />
+
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="www/res/icon/android/drawable-mdpi-icon.png" />
@@ -60,6 +61,7 @@
         <splash density="port-xxhdpi" src="www/res/screen/android/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="www/res/screen/android/drawable-port-xxxhdpi-screen.png" />
     </platform>
+	<icon src="icon.png" />
 	<!--<splash src="splash.png" />-->
 	<!--
     <platform name="ios">
