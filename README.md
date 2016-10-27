@@ -9,6 +9,7 @@ A PhoneGap Hello World template
 	phonegap serve
 	
 	
+	cordova build android
 	
 	cordova run android
 
