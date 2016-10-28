@@ -903,8 +903,8 @@ app.treatments.barcode = function() {
       {
           "preferFrontCamera" : true, // iOS and Android
           "showFlipCameraButton" : true, // iOS and Android
-          "prompt" : "Place a barcode inside the scan area", // supported on Android only
-          "formats" : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+          "prompt" : "Placer le code barre à l'intérieur de la zone de scan", // supported on Android only
+          "formats" : "QR_CODE,DATA_MATRIX,UPC_E,UPC_A,EAN_8,EAN_13,CODE_128,CODE_39,CODE_93,CODEBAR", // default: all but PDF_417 and RSS_EXPANDED
           "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
       }
    );
