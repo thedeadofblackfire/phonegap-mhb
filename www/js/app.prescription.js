@@ -318,7 +318,13 @@ app.prescription.barcode = function() {
                 "Format: " + result.format + "\n" +
                 "Cancelled: " + result.cancelled);	
 				
-		  if (!result.cancelled) app.prescription.sliceDatamatrix(result.text);
+		  if (!result.cancelled && result.text != '') {
+			  //result.text = result.text.replace(/[\x30\x29\x04]/g,"");
+			  result.text = result.text.replace(/[\x00-\x1F\x80-\xFF]/g,"");
+			  console.log(result.text);
+			  var slice = app.prescription.sliceDatamatrix(result.text);
+			  console.log(slice);
+		  }
       },
       function (error) {
           alert("Scanning failed: " + error);
@@ -340,15 +346,19 @@ app.prescription.barcode = function() {
  * example (6 avec 00) : app.prescription.sliceDatamatrix('01034009372081231712070010B0021');
  * example (6 avec 1000) : app.prescription.sliceDatamatrix('0103400933548339171710001020808221');
  * 010340095748938017170800105FF5A
+ * 010340093595583817170400102613
  *
  * Slice BE
  * {MED_ID,7}
  * example : 3172178000066757
  */
-app.prescription.sliceDatamatrix = function(datamatrix, lg) {
-	console.log('sliceDatamatrix');
+app.prescription.sliceDatamatrix = function(datamatrix, lg) {	
 	var lg = lg || 'FR'; // BE
 	var slice = {};
+	
+	// remove no printable characters like GS
+	datamatrix = datamatrix.replace(/[\x00-\x1F\x80-\xFF]/g,"");
+	console.log('sliceDatamatrix='+datamatrix);
 	if (lg == 'FR' && datamatrix.length > 26) {
 		slice.drug_code = datamatrix.substr(3,13);
 		slice.drug_dlu = datamatrix.substr(18,6);
