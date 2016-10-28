@@ -889,23 +889,3 @@ app.treatments.viewPill = function(type) {
                 });
 };
 
-app.treatments.barcode = function() {
-	cordova.plugins.barcodeScanner.scan(
-      function (result) {
-          alert("We got a barcode\n" +
-                "Result: " + result.text + "\n" +
-                "Format: " + result.format + "\n" +
-                "Cancelled: " + result.cancelled);
-      },
-      function (error) {
-          alert("Scanning failed: " + error);
-      },
-      {
-          "preferFrontCamera" : true, // iOS and Android
-          "showFlipCameraButton" : true, // iOS and Android
-          "prompt" : "Placer le code barre à l'intérieur de la zone de scan", // supported on Android only
-          "formats" : "QR_CODE,DATA_MATRIX,UPC_E,UPC_A,EAN_8,EAN_13,CODE_128,CODE_39,CODE_93,CODEBAR", // default: all but PDF_417 and RSS_EXPANDED
-          "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
-      }
-   );
-};

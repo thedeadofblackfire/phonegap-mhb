@@ -304,3 +304,73 @@ app.prescription.validPagePrescription = function() {
 app.prescription.alertDismissed = function() {
     // do something
 }
+
+
+app.prescription.barcode = function() {
+	cordova.plugins.barcodeScanner.scan(
+      function (result) {
+          alert("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
+		  console.log("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);	
+				
+		  if (!result.cancelled) app.prescription.sliceDatamatrix(result.text);
+      },
+      function (error) {
+          alert("Scanning failed: " + error);
+      },
+      {
+          "preferFrontCamera" : false, // iOS and Android
+          "showFlipCameraButton" : true, // iOS and Android
+          "prompt" : "Placer le code barre à l'intérieur de la zone de scan", // supported on Android only
+          "formats" : "QR_CODE,DATA_MATRIX,UPC_E,UPC_A,EAN_8,EAN_13,CODE_128,CODE_39,CODE_93,CODEBAR", // default: all but PDF_417 and RSS_EXPANDED
+          "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+      }
+   );
+};
+
+/**
+ * Slice datamatrix FR
+ * 010{MED_ID,13}17{EXP_DATE_OR_DLU,6,yyMMdd}10{LOT_NUM}
+ * example (6) : app.prescription.sliceDatamatrix('01034009372081231714093010B0021');
+ * example (6 avec 00) : app.prescription.sliceDatamatrix('01034009372081231712070010B0021');
+ * example (6 avec 1000) : app.prescription.sliceDatamatrix('0103400933548339171710001020808221');
+ * 010340095748938017170800105FF5A
+ *
+ * Slice BE
+ * {MED_ID,7}
+ * example : 3172178000066757
+ */
+app.prescription.sliceDatamatrix = function(datamatrix, lg) {
+	console.log('sliceDatamatrix');
+	var lg = lg || 'FR'; // BE
+	var slice = {};
+	if (lg == 'FR' && datamatrix.length > 26) {
+		slice.drug_code = datamatrix.substr(3,13);
+		slice.drug_dlu = datamatrix.substr(18,6);
+		var strday = slice.drug_dlu.substr(4,2);
+		if (strday == '00') {
+			// change last 00 to 01
+			slice.drug_dlu = slice.drug_dlu.substr(0,4) + '01';
+		}
+		slice.drug_dlu_date = slice.drug_dlu.substr(4,2)+'/'+slice.drug_dlu.substr(2,2)+'/20'+slice.drug_dlu.substr(0,2);
+		slice.drug_dlu_sql = '20'+slice.drug_dlu.substr(0,2)+'-'+slice.drug_dlu.substr(2,2)+'-'+slice.drug_dlu.substr(4,2);
+		slice.drug_lotnum = datamatrix.substr(26);
+	
+		return slice;
+		
+	} else if (lg == 'BE') {
+		slice.drug_code = datamatrix.substr(0,7);
+		slice.drug_dlu = '';
+		slice.drug_dlu_date = '';
+		slice.drug_dlu_sql = '';
+		slice.drug_lotnum = ''; 
+	
+		return slice;
+	}
+	return false;	
+};
