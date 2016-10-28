@@ -91,7 +91,7 @@ app.date.formatDateToLabel = function(d) {
     else if (d.length == 10) current = new Date(parseInt(d.substr(0,4)), (parseInt(d.substr(5,2)) - 1), parseInt(d.substr(8,2)), 0, 0, 0 );
     else current = app.date.formatDateToTimestamp(d);
     var dd = current.getDate().toString();
-    var str = calendarTranslate.dayNames[current.getDay()]+' '+(dd[1]?dd:"0"+dd[0])+' '+calendarTranslate.monthNames[current.getMonth()];
+    var str = app.date.calendarTranslate.dayNames[current.getDay()]+' '+(dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNames[current.getMonth()];
     return str;
 };
 
@@ -144,11 +144,11 @@ app.date.formatDateToObject = function(d) {
     // label
     var dd = current.getDate().toString();
     info.label_night_day = (next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]);
-    info.label_current_day = calendarTranslate.dayNamesShort[current.getDay()];
+    info.label_current_day = app.date.calendarTranslate.dayNamesShort[current.getDay()];
   
     info.current_section = 'archive';
     if (d === info.str_today) {        
-        info.label_current_day = calendarTranslate.today.toUpperCase()+', '+ info.label_current_day;
+        info.label_current_day = app.date.calendarTranslate.today.toUpperCase()+', '+ info.label_current_day;
         
         // morning: 0600 - 1200, noon (12 - 18), evening (18 - 00), night (00 - 06)
         var time = parseInt(info.str_time, 10);
@@ -159,18 +159,18 @@ app.date.formatDateToObject = function(d) {
         else if (time >= 1800 && time < 2400) info.current_section = 'evening';
     }
     if (baseLanguage === 'fr') {        
-        info.label_current = (dd[1]?dd:"0"+dd[0])+' '+calendarTranslate.monthNamesShort[current.getMonth()];       
-        info.label_current_full = calendarTranslate.dayNamesShort[current.getDay()] + ' ' + info.label_current;
-        info.label_next_full = calendarTranslate.dayNamesShort[next.getDay()] + ' ' + (next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]) + ' ' + calendarTranslate.monthNamesShort[next.getMonth()];
-        info.label_prev_full = calendarTranslate.dayNamesShort[prev.getDay()] + ' ' + (prev.getDate().toString()[1]?prev.getDate().toString():"0"+prev.getDate().toString()[0]) + ' ' + calendarTranslate.monthNamesShort[prev.getMonth()];
-       // info.label_next_day = (dd[1]?dd:"0"+dd[0])+' '+calendarTranslate.monthNamesShort[next.getMonth()];
-        //info.label_next_day = next.getDate().toString()+' '+calendarTranslate.monthNamesShort[next.getMonth()];
+        info.label_current = (dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNamesShort[current.getMonth()];       
+        info.label_current_full = app.date.calendarTranslate.dayNamesShort[current.getDay()] + ' ' + info.label_current;
+        info.label_next_full = app.date.calendarTranslate.dayNamesShort[next.getDay()] + ' ' + (next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]) + ' ' + app.date.calendarTranslate.monthNamesShort[next.getMonth()];
+        info.label_prev_full = app.date.calendarTranslate.dayNamesShort[prev.getDay()] + ' ' + (prev.getDate().toString()[1]?prev.getDate().toString():"0"+prev.getDate().toString()[0]) + ' ' + app.date.calendarTranslate.monthNamesShort[prev.getMonth()];
+       // info.label_next_day = (dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNamesShort[next.getMonth()];
+        //info.label_next_day = next.getDate().toString()+' '+app.date.calendarTranslate.monthNamesShort[next.getMonth()];
     } else {
-        info.label_current = calendarTranslate.monthNamesShort[current.getMonth()]+', '+(dd[1]?dd:"0"+dd[0]);
-        //info.label_next_day = calendarTranslate.monthNamesShort[next.getMonth()]+', '+next.getDate().toString();
-        info.label_current_full = calendarTranslate.dayNamesShort[current.getDay()] + ' ' + info.label_current;
-        info.label_next_full = calendarTranslate.dayNamesShort[next.getDay()] + ' ' + calendarTranslate.monthNamesShort[next.getMonth()] + ', '+(next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]);
-        info.label_prev_full = calendarTranslate.dayNamesShort[prev.getDay()] + ' ' + calendarTranslate.monthNamesShort[prev.getMonth()] + ', '+(prev.getDate().toString()[1]?prev.getDate().toString():"0"+prev.getDate().toString()[0]);      
+        info.label_current = app.date.calendarTranslate.monthNamesShort[current.getMonth()]+', '+(dd[1]?dd:"0"+dd[0]);
+        //info.label_next_day = app.date.calendarTranslate.monthNamesShort[next.getMonth()]+', '+next.getDate().toString();
+        info.label_current_full = app.date.calendarTranslate.dayNamesShort[current.getDay()] + ' ' + info.label_current;
+        info.label_next_full = app.date.calendarTranslate.dayNamesShort[next.getDay()] + ' ' + app.date.calendarTranslate.monthNamesShort[next.getMonth()] + ', '+(next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]);
+        info.label_prev_full = app.date.calendarTranslate.dayNamesShort[prev.getDay()] + ' ' + app.date.calendarTranslate.monthNamesShort[prev.getMonth()] + ', '+(prev.getDate().toString()[1]?prev.getDate().toString():"0"+prev.getDate().toString()[0]);      
     }    
   
     console.log(info);
