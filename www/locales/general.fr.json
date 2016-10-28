@@ -1,0 +1,34 @@
+{
+    "label":
+    {
+        "home": "Accueil",
+        "treatments": "Traitements",
+        "report": "Rapport",
+        "settings": "Préférences",
+        "list": "Liste",
+		"signout": "Quitter",				
+        "language": "Langage",
+		"on": "Oui",
+		"off": "Non",                             
+        "somethingwrong": "Erreur! Merci de reessayer ultérieurement.",
+        "wait": "En cours...",
+        "closepanel": "Fermer",
+        "details": "Détails",
+		"prescription": "Ordonnance",
+		"sendprescription": "Envoyer votre ordonnance",
+		"prescriptionpicturedescription": "Merci de prendre une photo de votre ordonnance."
+    },
+    "treatments":
+    {
+        "treatments": "Traitements",
+        "report": "Rapport",
+        "nextdelivery": "Prochain sachet",
+        "notakingmedication": "Aucune prise de médicament prévu"
+    },
+    "description":
+    {
+        "currentlyactivechats": "Vos conversations en cours",
+        "nochatsinprogress": "Il n'y a pas de conversations en cours.",
+        "settings": "Vos préférences"
+    }
+}

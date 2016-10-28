@@ -1,0 +1,34 @@
+{
+    "label":
+    {
+        "home": "Home",
+        "treatments": "Treatments",
+        "report": "Report",
+        "settings": "Settings",
+        "list": "List",
+		"signout": "Sign Out",		
+        "language": "Language",
+		"on": "On",
+		"off": "Off",                    
+        "somethingwrong": "Something went wrong. Please try again later.",
+        "wait": "Wait...",
+        "closepanel": "Close panel",
+        "details": "Details",
+		"prescription": "Prescription",
+		"sendprescription": "Send your prescription",
+		"prescriptionpicturedescription": "Please take a picture of your prescription."
+    },
+    "treatments":
+    {
+        "treatments": "Treatments",
+        "report": "Report",
+        "nextdelivery": "Next delivery",
+        "notakingmedication": "No taking medication provided"
+    },
+    "description":
+    {
+        "currentlyactivechats": "Your currently active chats",
+        "nochatsinprogress": "There are currently no chats in progress.",
+        "settings": "Below are your settings"
+    }  
+}
