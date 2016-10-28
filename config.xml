@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.robotiktechnology.myhebdobox" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget id="com.robotiktechnology.myhebdobox" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	<!-- xmlns:cdv="http://cordova.apache.org/ns/1.0" -->
-    <name>MyHebdoBox</name>
+    <name>MYhebdoBox</name>
     <description>
-        MyHebdoBox
+        MYhebdoBox
     </description>
     <author href="http://www.robotiktechnology.com" email="dev@robotikdose.fr">
         Robotik Technology
