@@ -36,12 +36,16 @@ app.treatments.init = function() {
 };
 
 // load 7 last days
-app.treatments.load = function() {
-    console.log('TREATMENTS - loadTreatment');
-        
+app.treatments.load = function(forceReboot) {
+	var forceReboot = forceReboot || false;    
+	
+    console.log('TREATMENTS - loadTreatment '+forceReboot);
+   
     // show loading icon
     mofLoading(true);
-   
+      
+    if (forceReboot) current_treatment_page = 0;
+	
     current_treatment_page++;
     var last_days = 7;
 
@@ -520,6 +524,12 @@ app.treatments.processLocalNotification = function(data) {
                         
                         //if (v_delivery.status === app.treatments.constant.STATUS_PENDING) {
                    
+						/*
+						cordova.plugins.notification.local.isPresent(201611021900, function (present) {
+							alert(present ? "present" : "not found");
+						});
+						*/
+
                             var notification_id = '' + v_delivery.delivery_day + v_delivery.delivery_time; //uniq, for android it must be convert to integer
                             var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt);                       
                             var notification_title = 'Rappel Prise '+v_delivery.display_delivery_time; //Reminder
@@ -548,7 +558,8 @@ app.treatments.processLocalNotification = function(data) {
                                     data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt },
                                     //autoCancel: true,
                                     ongoing: true,
-									icon: 'file://img/chart.png',
+									icon: 'file:///img/chart.png',
+									//icon: 'file://img/chart.png',
                                     //repeat: 5, // 2 minutes
                                     //icon: 'file:///android_asset/www/img/flower128.png',                               
                                     at: notification_date
