@@ -58,7 +58,9 @@
 					console.log('PUSH - init');
 					push = PushNotification.init({
 						android: {
-							senderID: push_senderID
+							senderID: push_senderID,
+							icon: "logo",
+							iconColor: "lime"
 						},
 						browser: {
 							pushServiceURL: 'http://push.api.phonegap.com/v1/push'

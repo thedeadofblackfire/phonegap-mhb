@@ -466,6 +466,9 @@ app.treatments.localNotificationInit = function() {
 		console.log(json);
         // need to have the objUser preloaded
         // app.treatments.createPopupDelivery(json.delivery_dt);
+		
+		// @todo if network, send info to myEureka
+		
 	});
 
 	/*
