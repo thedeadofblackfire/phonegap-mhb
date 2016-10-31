@@ -37,50 +37,67 @@ app.treatments.init = function() {
 
 // load 7 last days
 app.treatments.load = function() {
-        console.log('TREATMENTS - loadTreatment');
+    console.log('TREATMENTS - loadTreatment');
         
-        // show loading icon
-        mofLoading(true);
+    // show loading icon
+    mofLoading(true);
    
-        current_treatment_page++;
-        var last_days = 7;
+    current_treatment_page++;
+    var last_days = 7;
 
-        $.ajax({
-              url: app_settings.api_url+"/gettreatment",
-              datatype: 'json',      
-              type: "post",
-              data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, last_days: last_days, page: current_treatment_page},   
-              success:function(res){                    
-                 console.log(res);
+	//https://vendor.eureka-platform.com/api/mobile/gettreatment?office_seq=1000&patient_user_seq=21ea938c29f24fcd9eaa8f598f2f11e5&last_days=7&page=1
+    $.ajax({
+        url: app_settings.api_url+"/gettreatment",
+        datatype: 'json',      
+        type: "post",
+        data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, last_days: last_days, page: current_treatment_page},   
+        success:function(res){                    
+            console.log(res);
      
-                 //var str = generatePageArchive(res);
+            //var str = generatePageArchive(res);
                
-                 mofLoading(false); 
+            mofLoading(false); 
 
-                 /*
+            /*
                 $.each(res.items, function(k, v) { 
                     console.log(k+' | '+v.delivery_day);
                 });        
-                */                
+            */                
                 
-                // save local storage
+            // save local storage
                 
-                app.treatments.processLocalNotification(res.items);
-                //mainView.loadContent(str);
+            app.treatments.processLocalNotification(res.items);
+            //mainView.loadContent(str);
            
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-				 mofLoading(false);  
-                 alert('Error loading datas, try again!');
-				 console.log(textStatus);
-				 console.log(errorThrown);
-              }
-           });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+			mofLoading(false);  
+            alert('Error loading datas, try again!');
+			console.log(textStatus);
+			console.log(errorThrown);
+        }
+    });
            
-        return true;
-}
+    return true;
+};
 
-app.treatments.displayTreatmentPage = function(page)
+app.treatments.navigatePageTreatment = function(delivery) {
+    console.log('page update id='+delivery);
+    
+    info_date = app.date.formatDateToObject(delivery);
+
+    app.treatments.respondPill();  
+                   
+    $('.current_date').html(info_date.label_current+'<br>'+info_date.label_current_day);
+    //$('.current_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_today+'&nocache=1');
+    $('.current_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_today+'\')');
+              
+    $('.prev_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_prev+'\')');
+    $('.next_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_next+'\')');
+  
+}; 
+
+app.treatments.displayPageTreatment = function(page)
 {        
         var delivery = page.query.delivery;
         if (delivery === undefined) {
@@ -146,23 +163,6 @@ app.treatments.displayTreatmentPage = function(page)
         return true;
 };
   
-app.treatments.navigatePageTreatment = function(delivery) {
-    console.log('page update id='+delivery);
-    
-    info_date = app.date.formatDateToObject(delivery);
-
-    app.treatments.respondPill();  
-                   
-    $('.current_date').html(info_date.label_current+'<br>'+info_date.label_current_day);
-    //$('.current_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_today+'&nocache=1');
-    $('.current_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_today+'\')');
-              
-    $('.prev_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_prev+'\')');
-    $('.next_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_next+'\')');
-  
-}; 
-
-
 app.treatments.displayPageTreatmentReport = function(page) {        
         var delivery = page.query.delivery;
         if (delivery === undefined) {
@@ -306,8 +306,7 @@ app.treatments.updateReportPercent = function() {
     percent = percent.toFixed(2);
     //console.log(app.treatments.stats.totalSuccess + ' ' + app.treatments.stats.totalError);
     var str_day = app.date.calendarTranslate.day+(app.treatments.stats.totalDays > 1?'s':'')
-    $('.percent').html(percent+'%, '+app.treatments.stats.totalDays+' '+str_day);
-                
+    $('.percent').html(percent+'%, '+app.treatments.stats.totalDays+' '+str_day);               
 };
 
 app.treatments.displayReportItems = function(items) {
@@ -445,25 +444,24 @@ app.treatments.displayReportItems = function(items) {
 
 app.treatments.localNotificationInit = function() {
     console.log('localNotificationInit');
-        /*
+    /*
         window.plugin.notification.local.onadd = function (id, state, json) {
             console.log('onadd '+id+' state='+state+' '+JSON.stringify(json));
         };
-        */
-       /*
-            window.plugin.notification.local.ontrigger  = function (id, state, json) {
-                console.log('ontrigger '+id+' state='+state+' '+JSON.stringify(json));
-            };
-            */
+    
+        window.plugin.notification.local.ontrigger  = function (id, state, json) {
+            console.log('ontrigger '+id+' state='+state+' '+JSON.stringify(json));
+        };
+    */
             
-	cordova.plugins.notification.local.on("click", function (notification) {
+	cordova.plugins.notification.local.on("click", function(notification) {
 		console.log(notification);
 		//console.log(state);
-    alert(notification.id + ' ' +notification.text);
-	 json = JSON.parse(notification.data);
-	 console.log(json);
-                // need to have the objUser preloaded
-       //         app.treatments.createPopupDelivery(json.delivery_dt);
+		alert(notification.id + ' ' +notification.text);
+		json = JSON.parse(notification.data);
+		console.log(json);
+        // need to have the objUser preloaded
+        // app.treatments.createPopupDelivery(json.delivery_dt);
 	});
 
 	/*
@@ -539,7 +537,7 @@ app.treatments.processLocalNotification = function(data) {
                                 url_sound = 'file:///android_asset/www/' + url_sound; //file:///android_asset/www/audio/aqua.mp3
                                
                             }
-                            url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
+                            //url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
         
                             cordova.plugins && cordova.plugins.notification.local.schedule({
                                     id: notification_id,
@@ -549,7 +547,8 @@ app.treatments.processLocalNotification = function(data) {
                                     badge: 1,
                                     data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt },
                                     //autoCancel: true,
-                                    ongoing: false,
+                                    ongoing: true,
+									icon: 'file://img/chart.png',
                                     //repeat: 5, // 2 minutes
                                     //icon: 'file:///android_asset/www/img/flower128.png',                               
                                     at: notification_date

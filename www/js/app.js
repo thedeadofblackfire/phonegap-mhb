@@ -396,7 +396,7 @@ function initFramework() {
         
         if (page.name === 'treatments') {                  
        
-             app.treatments.displayTreatmentPage(page);
+             app.treatments.displayPageTreatment(page);
  
         }
         

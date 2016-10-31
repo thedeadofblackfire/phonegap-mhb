@@ -150,13 +150,25 @@ app.date.formatDateToObject = function(d) {
     if (d === info.str_today) {        
         info.label_current_day = app.date.calendarTranslate.today.toUpperCase()+', '+ info.label_current_day;
         
-        // morning: 0600 - 1200, noon (12 - 18), evening (18 - 00), night (00 - 06)
+        // default section: morning: 0600 - 1200, noon (12 - 18), evening (18 - 00), night (00 - 06)
         var time = parseInt(info.str_time, 10);
         info.time = time;
         if (time >= 0 && time < 600) info.current_section = 'night';
         else if (time >= 600 && time < 1200) info.current_section = 'morning';
         else if (time >= 1200 && time < 1800) info.current_section = 'noon';
         else if (time >= 1800 && time < 2400) info.current_section = 'evening';
+		
+		// detect if custom section
+		if (app_settings.pattern_section && Object.keys(app_settings.pattern_section).length > 0) {
+			//console.log('pattern_section');
+			//console.log(app_settings.pattern_section);
+			Object.keys(app_settings.pattern_section).forEach(function(key, item) {
+				var section_start = parseInt(app_settings.pattern_section[key]['time_start'], 10);
+				var section_end = parseInt(app_settings.pattern_section[key]['time_end'], 10);
+				console.log('section='+app_settings.pattern_section[key]['section']+' start='+section_start+' end='+section_end);
+				if (time >= section_start && time < section_end) info.current_section = key;
+			});
+		}
     }
     if (baseLanguage === 'fr') {        
         info.label_current = (dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNamesShort[current.getMonth()];       
