@@ -59,7 +59,7 @@
 					push = PushNotification.init({
 						android: {
 							senderID: push_senderID,
-							icon: "logo",
+							icon: "push",
 							iconColor: "lime"
 						},
 						browser: {
