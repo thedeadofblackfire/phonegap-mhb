@@ -548,6 +548,7 @@ app.treatments.processLocalNotification = function(data) {
                                
                             }
                             //url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
+							url_sound = 'android.resource://' + app_settings.package_id + '/raw/fr_alarm_exit';
         
                             cordova.plugins && cordova.plugins.notification.local.schedule({
                                     id: notification_id,
