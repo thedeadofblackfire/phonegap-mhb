@@ -532,8 +532,8 @@ app.treatments.processLocalNotification = function(data) {
 
                             var notification_id = '' + v_delivery.delivery_day + v_delivery.delivery_time; //uniq, for android it must be convert to integer
                             var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt);                       
-                            var notification_title = 'Rappel Prise '+v_delivery.display_delivery_time; //Reminder
-                            var notification_message = 'Il est temps de prendre vos médicaments!';
+                            var notification_title = 'Valider la prise de '+v_delivery.display_delivery_time; //Reminder
+                            var notification_message = "C'est l'heure de prendre vos médicaments!";
                    
                             if (v_delivery.status === app.treatments.constant.STATUS_INPROGRESS && now > notification_date.getTime()) {
                                 console.log('Exclude '+notification_id + ' | ' + notification_title);
@@ -544,12 +544,11 @@ app.treatments.processLocalNotification = function(data) {
                             
                             var url_sound = 'sounds/fr_alarm01.mp3';
                             if (objConfig.platform == 'Android') {
-                                url_sound = 'file:///android_asset/www/' + url_sound; //file:///android_asset/www/audio/aqua.mp3
-                               
+                                url_sound = 'file:///android_asset/www/' + url_sound; //file:///android_asset/www/audio/aqua.mp3                               
                             }
                             //url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
-							url_sound = 'android.resource://' + app_settings.package_id + '/raw/fr_alarm_exit';
-        
+							url_sound = 'file://audio/fr_alarm_exit.mp3';
+							
                             cordova.plugins && cordova.plugins.notification.local.schedule({
                                     id: notification_id,
                                     title: notification_title,
@@ -559,28 +558,14 @@ app.treatments.processLocalNotification = function(data) {
                                     data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt },
                                     //autoCancel: true,
                                     ongoing: true,
-									icon: 'file:///img/chart.png',
-									//icon: 'file://img/chart.png',
+									//icon: 'res://icon',
+									icon: 'file://img/notification_delivery.png',
+								    smallIcon: 'res://ic_popup_reminder',
                                     //repeat: 5, // 2 minutes
                                     //icon: 'file:///android_asset/www/img/flower128.png',                               
                                     at: notification_date
                                 });
-								
-								/*
-								 window.plugin && window.plugin.notification.local.add({
-                                    id: notification_id,
-                                    title: notification_title,
-                                    message: notification_message,
-                                    sound: url_sound,
-                                    badge: 1,
-                                    json: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt },
-                                    autoCancel: true,
-                                    ongoing: false,
-                                    //repeat: 5, // 2 minutes
-                                    //icon: 'file:///android_asset/www/img/flower128.png',                               
-                                    date: notification_date
-                                });
-								*/
+														
                         //}
     
                      });           
