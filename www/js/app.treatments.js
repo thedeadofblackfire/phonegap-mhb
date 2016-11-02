@@ -459,7 +459,7 @@ app.treatments.localNotificationInit = function() {
 		
         // need to have the objUser preloaded
 		if (customData && customData.delivery_dt) {
-			app.treatments.createPopupDelivery(notification.data.delivery_dt);
+			app.treatments.createPopupDelivery(customData.delivery_dt);
 		}
 		
 		// @todo if network, send info to myEureka
