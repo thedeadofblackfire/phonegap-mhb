@@ -61,7 +61,7 @@
 							senderID: push_senderID,
 							//icon: "system"
 							icon: "push",
-							iconColor: "green"
+							//iconColor: "green"
 						},
 						browser: {
 							pushServiceURL: 'http://push.api.phonegap.com/v1/push'
