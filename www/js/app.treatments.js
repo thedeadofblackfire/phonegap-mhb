@@ -448,26 +448,17 @@ app.treatments.displayReportItems = function(items) {
 
 app.treatments.localNotificationInit = function() {
     console.log('localNotificationInit');
-    /*
-        window.plugin.notification.local.onadd = function (id, state, json) {
-            console.log('onadd '+id+' state='+state+' '+JSON.stringify(json));
-        };
-    
-        window.plugin.notification.local.ontrigger  = function (id, state, json) {
-            console.log('ontrigger '+id+' state='+state+' '+JSON.stringify(json));
-        };
-    */
-            
-	cordova.plugins.notification.local.on("click", function(notification) {
+
+	cordova.plugins.notification.local.on("click", function(notification, state) {
+		console.log('notification click '+notification.id+' state='+state);
 		console.log(notification);
-		//console.log(state);
-		alert(notification.id + ' ' +notification.text);
-		//json = JSON.parse(notification.data);
-		console.log(notification.data);
+		//alert(notification.id + ' ' +notification.text);
+		customData = JSON.parse(notification.data);
+		console.log(customData);
 		//JSON.stringify(json)
 		
         // need to have the objUser preloaded
-		if (notification.data && notification.data.delivery_dt) {
+		if (customData && customData.delivery_dt) {
 			app.treatments.createPopupDelivery(notification.data.delivery_dt);
 		}
 		
@@ -476,13 +467,18 @@ app.treatments.localNotificationInit = function() {
 	});
 
 	/*
-            window.plugin.notification.local.onclick   = function (id, state, json) {
-                console.log('onclick  '+id+' state='+state+' '+JSON.stringify(json));
-                json = JSON.parse(json);
-                // need to have the objUser preloaded
-                app.treatments.createPopupDelivery(json.delivery_dt);
-            };
-        */
+	// The schedule event will be fired for each local notification if you call schedule()
+	cordova.plugins.notification.local.on("schedule", function(notification) {
+		console.log('scheduled: '+notification.id);
+	});
+	*/
+	
+	/*
+	// The trigger event occurs when the local notification has reached it's trigger date and has been added to the notification center.
+	cordova.plugins.notification.local.on("trigger", function(notification) {
+		console.log('triggered: '+notification.id);
+	});
+	*/
 };
 
 app.treatments.localNotificationCancelAll = function() {
