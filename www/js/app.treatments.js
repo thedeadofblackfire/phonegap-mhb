@@ -888,3 +888,13 @@ app.treatments.viewPill = function(type) {
                 });
 };
 
+
+app.treatments.deliverySuccess = function(d) {
+	console.log('app.treatments.deliverySuccess');
+	console.log(d);
+);
+
+app.treatments.deliveryFail = function(d) {
+	console.log('app.treatments.deliveryFail');
+	console.log(d);
+);
