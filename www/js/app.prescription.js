@@ -268,6 +268,7 @@ app.prescription.validPagePrescription = function() {
 	params.seq = capturedPhoto;
 	params.office_seq = objUser.office.office_seq;
 	params.patient_user_seq = objUser.uuid;
+	params.vendor_seq = objUser.vendor_seq;
 	params.upload_type = 'prescription';
     options.params = params;
     options.chunkedMode = true; //true;
