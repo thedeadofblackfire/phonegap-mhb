@@ -16,7 +16,6 @@ app.prescription.win = function(r) {
     //console.log("Image uploaded successfully!!"); 
     //alert("Image uploaded successfully!!"); 
 	uploadedPhoto++;
-    //alert(uploadedPhoto);
     
     //$('.status').html('');
     NProgress.done();
@@ -141,7 +140,7 @@ app.prescription.uploadVin = function(imageURI) {
     var options = new FileUploadOptions();
     options.fileKey = "file";
     // var userid = '123456';
-    var imagefilename = request_id + '_ordo_' + Number(new Date()) + ".jpg";
+    var imagefilename = 'ordo_' + Number(new Date()) + ".jpg";
     //options.fileName = imageURI;
 	//options.fileName = imagefilename;
 	options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
@@ -153,10 +152,8 @@ app.prescription.uploadVin = function(imageURI) {
 	params.seq = capturedPhoto;
 	params.office_seq = objUser.office.office_seq;
 	params.patient_user_seq = objUser.uuid;
-	params.request_id = request_id;
+	params.vendor_seq = objUser.vendor_seq;
 	params.upload_type = 'prescription';
-	//params.id = request_id;
-    //params.userid = sessionStorage.loginuserid;
     options.params = params;
     options.chunkedMode = true; //true;
     
@@ -198,67 +195,14 @@ app.prescription.uploadVin = function(imageURI) {
 
 app.prescription.validPagePrescription = function() {
 
-  if(hasPic == 1 && prescriptionURI){
-			/*
-			var formData = $("#form-confirmrequest").serialize();
-		
-            console.log(formData);
-			
-              $.ajax({
-                    type: "POST",
-                    url: app_settings.api_url+"/ajax.php?m=confirmrequest&id="+request_id,
-                    cache: false,
-                    data: formData,                    
-                    beforeSend: function() {
-                        // This callback function will trigger before data is sent
-                        //$.mobile.showPageLoadingMsg(true); // This will show ajax spinner
-                    },
-                    complete: function() {
-                        // This callback function will trigger on data sent/received complete
-                        //$.mobile.hidePageLoadingMsg(); // This will hide ajax spinner
-                    },
-                    success: function (result) {
-                        //    resultObject.formSubmitionResult = result;
-                        //                $.mobile.changePage("#second");
-                        console.log(result);  
-						
-                        //$("#page-addlocation").dialog('close');
-                        //$('[data-role=dialog]').dialog( "close" );
-						//window.location="#page4
-						if (result.success) {
-							$('#request_id').html(request_id);
-							
-							// clean datas
-							request_id = '';
-							window.localStorage.setItem('request_id', '');
-							
-							//$('#form-addrequest')[0].reset();
-							$('#form-confirmrequest')[0].reset();	
-							//capturedPhoto = 0;
-							//uploadedPhoto = 0;							
-							//$('#pictures').html('');
-							//$('#picture-demo').show();
-						
-							$('#prescriptionFrame').attr('src','img/service-4.png.png');
-							
-							// move to final page
-							//$.mobile.changePage("#page-completed");
-						}
-                    },
-                    error: function (request,error) {
-                        // This callback function will trigger on unsuccessful action                
-                        alert('Network error has occurred please try again!');
-                    }
-                });
-			*/
-			
+  if(hasPic == 1 && prescriptionURI){				
     
 	NProgress.start();
 	
 	// upload
     var options = new FileUploadOptions();
     options.fileKey = "file";
-    var imagefilename = objUser.uuid + '_ordo_' + Number(new Date()) + ".jpg";
+    var imagefilename = 'ordo_' + Number(new Date()) + ".jpg";
 	options.fileName = prescriptionURI.substr(prescriptionURI.lastIndexOf('/')+1);
     options.mimeType = "image/jpeg"; 
 
