@@ -21,65 +21,65 @@ html.ios .page-content {
 */
 /*==============================
     Styles for case with statusbar overlay
-==============================*/
-html.with-statusbar-overlay .statusbar-overlay {
-  background: #fff;
-}
-html.with-statusbar-overlay .statusbar-overlay.with-popup-opened {
-  z-index: 11000;
-  background: #1c1d21;
-}
-@media all and (max-width: 630px) and (max-height: 630px) {
-  html.with-statusbar-overlay .popup {
-    top: 20px;
-    height: -webkit-calc(100% - 20px);
-    height: -moz-calc(100% - 20px);
-    height: -ms-calc(100% - 20px);
-    height: calc(100% - 20px);
-  }
-}
+    ==============================*/
+    html.with-statusbar-overlay .statusbar-overlay {
+      background: #fff;
+    }
+    html.with-statusbar-overlay .statusbar-overlay.with-popup-opened {
+      z-index: 11000;
+      background: #1c1d21;
+    }
+    @media all and (max-width: 630px) and (max-height: 630px) {
+      html.with-statusbar-overlay .popup {
+        top: 20px;
+        height: -webkit-calc(100% - 20px);
+        height: -moz-calc(100% - 20px);
+        height: -ms-calc(100% - 20px);
+        height: calc(100% - 20px);
+      }
+    }
 
 /*==============================
     Panel
-==============================*/
-.panel {
-  background: #222;
-  color: #dddddd;
-}
-.panel-left {
-   background: #3B3B3B;
-   filter: alpha(opacity=90);
-   filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
-   opacity:0.9;
-   -moz-opacity: 0.90; 
-}
-.panel-left .content-block,
-.panel-left .content-block-title {
-  color: #dddddd;
-}
-.panel-left .list-block ul {
-  background: none;
-}
-.panel-left .list-block ul,
-.panel-left .list-block .item-inner {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.panel-left .list-block a {
-  color: inherit;
-}
-.panel-left .list-block a:active {
-  background: #000;
-}
-.panel-right {
+    ==============================*/
+    .panel {
+      background: #222;
+      color: #dddddd;
+    }
+    .panel-left {
+     background: #3B3B3B;
+     filter: alpha(opacity=90);
+     filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+     opacity:0.9;
+     -moz-opacity: 0.90;
+   }
+   .panel-left .content-block,
+   .panel-left .content-block-title {
+    color: #dddddd;
+  }
+  .panel-left .list-block ul {
+    background: none;
+  }
+  .panel-left .list-block ul,
+  .panel-left .list-block .item-inner {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .panel-left .list-block a {
+    color: inherit;
+  }
+  .panel-left .list-block a:active {
+    background: #000;
+  }
+  .panel-right {
    background: #22504E;
    filter: alpha(opacity=90);
    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
    opacity:0.9;
-   -moz-opacity: 0.90; 
-}
-.panel-right .content-block,
-.panel-right .content-block-title,
-.panel-right .list-panel-title {
+   -moz-opacity: 0.90;
+ }
+ .panel-right .content-block,
+ .panel-right .content-block-title,
+ .panel-right .list-panel-title {
   color: #dddddd;
 }
 .panel-right .navbar {
@@ -191,6 +191,14 @@ i.ks-tabbar-icon-4 {
 }
 
 
+
+
+
+
+
+
+
+
 /* switch orange */
 /*
 .label-switch input[type="checkbox"] + .checkbox:before {
@@ -215,7 +223,7 @@ i.ks-tabbar-icon-4 {
 */
 .content-block-title.title_blue {
  color:#007AFF;
-} 
+}
 
 /* ionic icon */
 .size-12 { font-size: 12px; }
@@ -227,9 +235,9 @@ i.ks-tabbar-icon-4 {
 .size-32 { font-size: 32px; }
 .size-48 { font-size: 48px; }
 .size-64 { font-size: 64px; }
-.size-96 { font-size: 96px; }    
-    
- /* homepage */
+.size-96 { font-size: 96px; }
+
+/* homepage */
 .navbar.home {
   height: 46px;
   left: 0;
@@ -239,7 +247,7 @@ i.ks-tabbar-icon-4 {
 }
 .navbar.home .right {
   margin-left: 10px;
-    background: #3B3B3B;
+  background: #3B3B3B;
 }
 
 /* pill */
@@ -264,7 +272,165 @@ i.ks-tabbar-icon-4 {
   -webkit-overflow-scrolling: touch;
   -webkit-transition-duration: 450ms;
   transition-duration: 450ms;
-  background: rgba(0,0,0, 0.70);  
+  background: rgba(0,0,0, 0.70);
   -webkit-perspective: 1200px;
-  perspective: 1200px;  
+  perspective: 1200px;
+}
+
+
+
+/**** THIS PART GONNA BE THE CUSTOM CSS v2****/
+
+
+i.ks-icon-pill {
+  width: 24px;
+  height: 24px;
+  background-image:url("data:image/svg+xml;charset=utf-8,<svg fill='#fff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+}
+
+i.ks-icon-profil {
+  width: 24px;
+  height: 24px;
+  background-image:url("data:image/svg+xml;charset=utf-8,<svg fill='#fff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+}
+
+i .ks-icon-contact {
+   width: 24px;
+  height: 24px;
+  background-image:url("data:image/svg+xml;charset=utf-8,<svg fill='#fff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+
+}
+
+
+
+
+
+/* menu tab up  */
+
+i.ks-icon-loupe {
+  width: 30px; 
+  height: 30px; 
+  background:url(../img/svg/profile.svg) no-repeat ;
+  background-size: 100px 82px;
+}
+
+i.ks-icon-ordo-traitement {
+  width: 60px;
+  height: 60px;
+  background: url(../img/svg/ORDO_TRAITEMENT.svg) no-repeat ;
+  
+}
+
+i.ks-icon-call_pharmacien{
+  width: 30px; 
+  height: 30px; 
+  background:url(../img/svg/CALL_PHARMACIEN.svg) no-repeat ;
+}
+
+
+i.ks-icon-medicament{
+  width: 30px; 
+  height: 30px; 
+  background:url(../img/svg/MEDICAMENT.svg) no-repeat ;
+}
+
+
+i.mhx-drugs-doliprane{
+  width: 50px; 
+  height: 50px;
+  background: url(../img/svg/gellule.svg) no-repeat;
+}
+i.mhx-drugs-cachet{
+  width: 50px; 
+  height: 50px;
+  background: url(../img/svg/CACHET.svg) no-repeat;
+}
+i.mhx-drugs-dejeuner{
+  width: 50px; 
+  height: 50px;
+  background: url(../img/svg/DEJEUNER.svg) no-repeat;
+}
+
+  .item-media i{
+    max-width: 50px;
+    border-radius: 50%;
+    
+    }  
+
+
+i.ks-icon-etoile{
+  width: 60px; 
+  height: 60px; 
+  background:url(../img/svg/ETOILE.svg) no-repeat ;
+}
+
+i.mhb-traitement{
+  width: 60px; 
+  height: 60px; 
+  background:url(../img/svg/ordo-traitement.svg) no-repeat ;
+}
+
+
+.navbar-tool{
+  margin-bottom: 0px !important;
+}
+
+
+
+i.mhbx-logo{
+ background:url(../img/svg/logo.svg) no-repeat ; 
+}
+
+
+.navbar-tool {
+  margin-top: 12px;
+}
+
+.navbar-tool .material-icons {
+
+  font-size: 30px; 
+}
+
+
+
+.page-taking{
+  /* padding-top: 0px !important; */
+}
+
+.item-after{
+  margin-left: 0px !important;
+}
+
+.navbar.change-color{
+  background-color: white;
+}
+
+.toolbar-custom{
+   margin-top: 30px;
+}
+
+
+
+
+
+#loginForm .list-block .item-media i{
+  background-color: white;
+}
+
+
+
+span.navbar-logo {
+  width: 50%;
+  height: 35px;
+  background: url(../img/logo.svg) no-repeat center;
+  -webkit-background-size: 100% auto;
+  background-size: 100% auto;
+  display: block;
+  margin-left: auto;
+  margin-right:   auto;
+  margin-top: 8px;
+}
+
+.theme-teal {
+  background-color: 009772 !important;
 }

@@ -1,31 +1,32 @@
 
 <!--<div class="pages"> -->
-  <!-- Page, data-page contains page name-->
-  <div data-page="treatments" class="page navbar-fixed toolbar-fixed">
-    <!-- Scrollable page content-->
+<!-- Page, data-page contains page name-->
+<div data-page="treatments" class="page navbar-fixed toolbar-fixed">
+  <!-- Scrollable page content-->
+  
+  
+  <div class="page-content" style="background:#00A77F;">
+  
+  <div class="navbar homex layout-dark">
+    <div class="navbar-inner">
+      <div class="left">
+        <a href="#" class="back"><i class="icon size-24 ion-ios7-arrow-left"></i></a>
+        <a href="#" class="link icon-only open-panel "><i class="icon size-24 ion-navicon-round icon-barsxxx"></i></a>
+        <!--<a href="#" class="link icon-only open-panel "><i class="icon icon-bars"></i></a>-->
+      </div>
+      <div class="center sliding contacts-list-header" data-i18n="treatments.treatments">treatments.treatments</div>
+      <div class="right" >
+        <!--<a href="#" class="link icon-only"><i class="icon icon-plus">+</i></a>-->
+        <!--<a href="#" class="refresh-click link icon-only"><i class="icon ion-ios7-reload"></i></a> -->
+        <!--<a href="index.html" class="back" style="color:#fff">back</a> -->
+        <!--<a href="#" class="link icon-only "><i class="icon size-24 ion-clock"></i></a>-->
+        <a href="frames/daily_treatment.html?nocache=1" class="link icon-only no-animation"><i class="icon size-24 ion-stats-bars"></i></a>
 
-      <div class="navbar homex layout-dark">
-        <div class="navbar-inner">
-            <div class="left">
-            <a href="#" class="back"><i class="icon size-24 ion-ios7-arrow-left"></i></a>
-            <a href="#" class="link icon-only open-panel "><i class="icon size-24 ion-navicon-round icon-barsxxx"></i></a>
-             <!--<a href="#" class="link icon-only open-panel "><i class="icon icon-bars"></i></a>-->
-            </div>
-            <div class="center sliding contacts-list-header" data-i18n="treatments.treatments">treatments.treatments</div>
-            <div class="right" >
-            <!--<a href="#" class="link icon-only"><i class="icon icon-plus">+</i></a>-->
-            <!--<a href="#" class="refresh-click link icon-only"><i class="icon ion-ios7-reload"></i></a> -->
-            <!--<a href="index.html" class="back" style="color:#fff">back</a> -->
-            <!--<a href="#" class="link icon-only "><i class="icon size-24 ion-clock"></i></a>-->
-            <a href="frames/treatments_report.html?nocache=1" class="link icon-only no-animation"><i class="icon size-24 ion-stats-bars"></i></a>
+      </div>
+    </div>
+  </div>       
 
-            </div>
-        </div>
-    </div>     
-    
-    <div class="page-content" style="background:#00A77F;">    
-
-	<a href="javascript:app.treatments.load();" style="color:white;text-align:center;">load</a>
+   <a href="javascript:app.treatments.load();" style="color:white;text-align:center;">load</a>
             <!--
              <div class="list-block">
                <ul>  
@@ -45,8 +46,8 @@
                   
                 </ul>
               </div> 
-              -->
-			  
+            -->
+            
 			  <!--
 			  https://martinwolf.org/blog/2014/12/adding-and-removing-classes-from-svg-elements-with-jquery
 			  https://toddmotto.com/hacking-svg-traversing-with-ease-addclass-removeclass-toggleclass-functions/
@@ -54,40 +55,40 @@
 			  $('#js_svg-element').attr('class', ''); // remove
 			  
 			  $('#doc_graph #pill_lunch').attr('class', 'grayBG');
-			  -->
-			  <script>
-function notify(evt){alert(evt.target.id)}
-</script>
-			  	<div style="text-align:center;background:transparent;position:relative;"> 
-				   <img id="doc_graph" src="img/puzzle_animation.svg" alt="Puzzle" width="90%"> 
-                </div>
-					
-					<embed src="img/puzzle_animation.svg" width="100%"></embed>
+     -->
+     <script>
+      function notify(evt){alert(evt.target.id)}
+    </script>
+    <div style="text-align:center;background:transparent;position:relative;"> 
+     <img id="doc_graph" src="img/puzzle_animation.svg" alt="Puzzle" width="90%"> 
+   </div>
+   
+   <!-- <embed src="img/puzzle_animation.svg" width="100%"></embed>
+    -->
 
-
-          <center>
-          <div class="pill" style="position:relative;">{pill}</div>
-          </center>
-            
-            <br><br>
-          <div style="text-align:center; width:auto;margin:10px;background-color: #DADFE4;font-size:16px;color:#37C3BD; font-weight:bold;">
-          <span data-i18n="treatments.nextdelivery">treatments.nextdelivery</span> : 
-          <br><i class="icon size-24 ion-clock"></i> 11:30 (4)
-          </div>          
+   <center>
+    <div class="pill" style="position:relative;">{pill}</div>
+  </center>
   
-    </div>
-    
-    <div class="toolbar toolbar-bottom">
-                <div class="toolbar-inner">
-                    <a href="#" class="link"><i class="icon size-32 ion-ios7-search-strong"></i></a>
-                    <a href="#" class="link no-animation prev_date"><i class="icon size-24 ion-arrow-left-b"></i></a>
-                    <a href="#" class="link no-animation current_date" style="font-size:14px;line-height:16px;text-align:center"><!--May, 14<br>TODAY, Wed--></a>
-                    <a href="#" class="link no-animation next_date"><i class="icon size-24 ion-arrow-right-b"></i></i></a>
-                    <!--<a href="#" class="link"><i class="icon size-24 ion-arrow-left-b"></i>&nbsp; May, 14 <i class="icon size-24 ion-arrow-right-b"></i> </a>-->
-                    <a href="#" class="link"><i class="icon size-32 ion-ios7-gear-outline"></i></a>
-                </div>
-    </div> 
-            
-            
+  <br><br>
+  <div style="text-align:center; width:auto;margin:10px;background-color: #DADFE4;font-size:16px;color:#37C3BD; font-weight:bold;">
+    <span data-i18n="treatments.nextdelivery">treatments.nextdelivery</span> : 
+    <br><i class="icon size-24 ion-clock"></i> 11:30 (4)
+  </div>          
+  
+</div>
+
+<div class="toolbar toolbar-bottom">
+  <div class="toolbar-inner">
+    <a href="#" class="link"><i class="icon size-32 ion-ios7-search-strong"></i></a>
+    <a href="#" class="link no-animation prev_date"><i class="icon size-24 ion-arrow-left-b"></i></a>
+    <a href="#" class="link no-animation current_date" style="font-size:14px;line-height:16px;text-align:center"><!--May, 14<br>TODAY, Wed--></a>
+    <a href="#" class="link no-animation next_date"><i class="icon size-24 ion-arrow-right-b"></i></i></a>
+    <!--<a href="#" class="link"><i class="icon size-24 ion-arrow-left-b"></i>&nbsp; May, 14 <i class="icon size-24 ion-arrow-right-b"></i> </a>-->
+    <a href="#" class="link"><i class="icon size-32 ion-ios7-gear-outline"></i></a>
   </div>
+</div> 
+
+
+</div>
 <!--</div> -->

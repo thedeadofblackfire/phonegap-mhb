@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="doc_graph" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 283.5 283.5" style="enable-background:new 0 0 283.5 283.5;" xml:space="preserve" onload="init('doc_graph')">
+<svg version="1.1"  
+	 xmlns="http://www.w3.org/2000/svg" 
+	 xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 283.5 283.5" 
+	 style="enable-background:new 0 0 283.5 283.5;" 
+	 xml:space="preserve" 
+	 onload="init(evt)">
+
+
+
+
 <style type="text/css">
 	.st0{fill:#FCC000;}
 	.st1{fill:#61AED2;}
@@ -16,8 +24,11 @@
 	.st3:hover{fill:#F9C6C7;}
 	.grayBG:hover{fill:#B5B6B9;}
 </style>
-<script type="text/ecmascript">
-				  
+<!-- <script type="text/ecmascript">
+		<![CDATA[
+
+
+
 		    var svgNamespaceURI = "http://www.w3.org/2000/svg";
 			//function init(evt, sdoc) {
 		    function init(sdoc) {
@@ -51,27 +62,74 @@
 		        }
 		      }
 		    }
-		  
-		</script>
+
+
+		]]></script> -->
+
+
+		<script type="text/ecmascript"> 
+		<![CDATA[		
+			
+			var takingPeriode = {'pill_morning' : 8, 
+						  'pill_lunch' : 12,
+						  'pill_evening' : 16,
+						  'pill_diner': 20};
+
+			var currentDate= new Date(); 
+			var currentHour = currentDate.getHours();
+
+
+			function init(evt){
+				//console.log(evt);
+			 	if(window.svgDocument == null ) {
+				    svgDocument = evt.target.ownerDocument;
+			      	console.log(svgDocument);
+				  }
+			    
+			   drugIntake(takingPeriode,currentHour); 
+			   		
+			}
+
+			
+
+			function drugIntake(takingPeriode, currentHour){
+		    
+		    		for (indice in  takingPeriode){
+		    	 	 
+						if (currentHour > takingPeriode[indice] ){
+							var pillId = svgDocument.getElementById(indice); 
+							var oldClass = pillId.getAttributeNS(null, 'class');
+							console.log(oldClass);
+							var newClass = pillId.setAttributeNS(null, 'class', 'grayBG');
+							
+						}
+		    	 	}
+		    	 }
+
+			]]></script>
 <g>
 	<g>
-		<!--<a xlink:href="javascript:alert('toto');" xlink:title="petit-déjeuner">-->
+		<a xlink:href="javascript:alert(currentHour);" xlink:title="petit-déjeuner">
 		<path id="pill_morning" onclick="top.notify(evt)" xxxonclick="app.treatments.createPopupDelivery('2014-10-06 10:00:00');" class="xgrayBG st0" d="M59.7,144.5l-2.1,3.1c-2.6,3.8-3.9,8.2-3.9,12.9c0,12.5,9.8,22.6,21.9,22.6s21.9-10.1,21.9-22.6
 			c0-4.7-1.4-9.1-3.9-12.9l-2.1-3.1h50.8v-42.4c-3.7,1.8-7.8,2.8-12,2.8c-14.6,0-26.5-11.6-26.5-25.8s11.9-25.8,26.5-25.8
-			c4.2,0,8.3,1,12,2.8V18.8C72.9,19.5,16.7,75.3,15.3,144.5H59.7z"/>
-			<!--</a>-->
+			c4.2,0,8.3,1,12,2.8V18.8C72.9,19.5,16.7,75.3,15.3,144.5H59.7z"/>;
+		</a>
 		<a xlink:href="javascript:app.treatments.createPopupDelivery('2014-10-06 10:00:00');top.notify(evt);" xlink:title="déjeuner">	
 		<path id="pill_lunch" class="xgrayBG st1" d="M146.2,63.2l-3.1-2.1c-3.8-2.6-8.3-3.9-12.9-3.9c-12.4,0-22.6,9.8-22.6,21.9c0,12.1,10.1,21.9,22.6,21.9
 			c4.6,0,9.1-1.4,12.9-3.9l3.1-2.1v49.5h45.2c-1.5-3.5-2.2-7-2.2-10.7c0-14.6,11.6-26.5,25.8-26.5c14.2,0,25.8,11.9,25.8,26.5
-			c0,3.7-0.7,7.2-2.2,10.7h33.2C270.5,75.7,215,20.2,146.2,18.8V63.2z" xonclick="alert('ro');" onmouseover="underline(evt,'Tgraph4')"/></a>
+			c0,3.7-0.7,7.2-2.2,10.7h33.2C270.5,75.7,215,20.2,146.2,18.8V63.2z" xonclick="alert('ro');" onmouseover="underline(evt,'Tgraph4')"/>
+		</a>
 		<a xlink:href="javascript:alert('toto');" xlink:title="dîner">
 		<path id="pill_diner" class="xgrayBG st2" d="M232.2,148.4l1.6-2.9c2.1-3.9,3.1-7.7,3.1-11.8c0-12.4-9.8-22.6-21.9-22.6c-12.1,0-21.9,10.1-21.9,22.6
 			c0,4,1,7.9,3.1,11.8l1.6,2.9h-51.6v46.5c3.5-1.5,7-2.2,10.7-2.2c14.6,0,26.5,11.6,26.5,25.8c0,14.2-11.9,25.8-26.5,25.8
-			c-3.7,0-7.2-0.7-10.7-2.2v33.2c69.2-1.4,125-57.6,125.6-126.9H232.2z"/></a>
-		<a xlink:href="javascript:alert('toto');" xlink:title="coucher">
-		<path id="pill_evening" class="xgrayBG st3" d="M142.3,235.7l2.9,1.6c3.9,2.1,7.7,3.1,11.8,3.1c12.4,0,22.6-9.8,22.6-21.9c0-12.1-10.1-21.9-22.6-21.9
+			c-3.7,0-7.2-0.7-10.7-2.2v33.2c69.2-1.4,125-57.6,125.6-126.9H232.2z"/>
+		</a>
+		
+		<a xlink:href="javascript:app.mainView.loadPage('frames/daily_treatment.html');top.notify(evt);" xlink:title="coucher">
+		<path id="pill_evening"  xlink:href="javascript:app.mainView.loadPage('frames/daily_treatment.html');top.notify(evt);" xlink:title="déjeuner" class="xgrayBG st3" d="M142.3,235.7l2.9,1.6c3.9,2.1,7.7,3.1,11.8,3.1c12.4,0,22.6-9.8,22.6-21.9c0-12.1-10.1-21.9-22.6-21.9
 			c-4,0-7.9,1-11.8,3.1l-2.9,1.6v-52.9H98.6c1.8,3.7,2.8,7.8,2.8,12c0,14.6-11.6,26.5-25.8,26.5S49.8,175,49.8,160.4
-			c0-4.2,1-8.3,2.8-12H15.3c0.7,69.8,57.1,126.3,127,127V235.7z"/></a>
+			c0-4.2,1-8.3,2.8-12H15.3c0.7,69.8,57.1,126.3,127,127V235.7z"/>
+		</a>
 	</g>
 	
 	<g>
@@ -199,4 +257,6 @@
 	</g>
 
 </g>
+
+
 </svg>

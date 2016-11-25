@@ -1,4 +1,4 @@
-// Initialize your app
+ // Initialize your app
 var myApp = new Framework7();
 
 // Export selectors engine
