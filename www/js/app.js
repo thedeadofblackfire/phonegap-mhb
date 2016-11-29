@@ -1,6 +1,6 @@
 var ENV = 'production';
 var ENV_TARGET = 'phonegap'; // html5, phonegap
-if (window.location.hostname == 'eboxsmart.phonegap.local') {
+if (window.location.hostname == 'eboxsmart.phonegap.local' || window.location.port == '3000') {
     ENV = 'dev';
 	ENV_TARGET = 'html5';
 	app_settings.api_url = app_settings.api_url_dev;
@@ -15,57 +15,13 @@ var baseLanguage = 'en';
 var objConfig = {
    'version': '1.0.0',
    'build': "1832",
-   'release_time': '2014.09.13 11:00',
+   'release_time': '2016.12.01 11:00',
    'platform': 'Android'
 };
 
 // INIT SETTING: config
 var dbAppUserSettings = dbAppUserSettings || fwkStore.DB("user_settings");
 var objUserSettings = {}; 
-
-/*
-// custom native log
-window.console=(function(origConsole){
-
-    if(!window.console)
-      console = {};
-    var isDebug=true,
-    logArray = {
-      logs: [],
-      errors: [],
-      warns: [],
-      infos: []
-    }
-    return {
-        log: function(){
-          logArray.logs.push(arguments);
-          if (typeof(arguments[0]) == "object") $('.log').prepend('<li>'+new Date().toISOString() + ' > '+JSON.stringify(arguments[0])+'</li>');
-          else $('.log').prepend('<li>'+new Date().toISOString() + ' > '+arguments[0]+'</li>');  
-          //$("#app-status-ul").prepend('<li>'+message+'</li>');
-          isDebug && origConsole.log && origConsole.log.apply(origConsole,arguments);
-        },
-        warn: function(){
-          logArray.warns.push(arguments)
-          isDebug && origConsole.warn && origConsole.warn.apply(origConsole,arguments);
-        },
-        error: function(){
-          logArray.errors.push(arguments)
-          isDebug && origConsole.error && origConsole.error.apply(origConsole,arguments);
-        },
-        info: function(v){
-          logArray.infos.push(arguments)
-          isDebug && origConsole.info && origConsole.info.apply(origConsole,arguments);
-        },
-        debug: function(bool){
-          isDebug = bool;
-        },
-        logArray: function(){
-          return logArray;
-        }
-    };
-
-}(window.console));
-*/
 
 var app = {
     // Application Constructor
@@ -348,10 +304,10 @@ function initFramework() {
         cacheDuration: 1000,
         swipePanel: 'left',
         swipePanelActiveArea: 30,
-		modalTitle: 'eureKa Care',
+		modalTitle: 'MyhebdoBox',
         animateNavBackIcon: true
     });
-    
+	
     // Expose Internal DOM library
     $$ = Dom7; //Framework7.$;
     
@@ -381,8 +337,6 @@ function initFramework() {
         if (page.name === 'login') {
             console.log('login.html pageinit'); 
             //alert('login');
-            // mainView.hideToolbar();
-              //mainView.hideNavbar
             if (Object.keys(objUser).length == 0) {
                 doRefresh = false;
             }
@@ -400,7 +354,7 @@ function initFramework() {
       if (page.name === 'profile'){
             console.log('this is profile');
             //console.log('login.html pageinit'); 
-            app.mainView.loadPage('frames/profile.html');
+            mainView.loadPage('frames/profile.html');
        
         }
       
@@ -429,50 +383,7 @@ function initFramework() {
              app.treatments.displayPageTreatmentReport(page);
  
         }
-        
-        //alert(page.name);
-        if (page.name === 'video_feature') {
-			 console.log('video_feature.html pageinit'); 
-			 peer_init();
-		}
-		
-        if (page.name === 'video') {
-            console.log('video.html pageinit'); 
-            if (Object.keys(objUser).length == 0) {
-                doRefresh = false;
-            }
-            
-            $.ajax({
-              //url: 'js/vline.js',
-              url: 'https://static.vline.com/vline.js',
-              dataType: "script",
-              success: function() {
-                
-                 $.ajax({
-                  url: 'js/mls.vline.js',                  
-                  dataType: "script",
-                  success: function() {
-                                   
-                        handleVideo();
-                  }
-                 });
-             
-              }
-            });
-            
-        }
-        
-        if (page.name === 'ble') { 
-       
-            $.ajax({
-                  url: 'js/mls.ble.js',                  
-                  dataType: "script",
-                  success: function() {
-                                   
-                        handleBle();
-                  }
-                 });
-        }
+  
                
         if (page.name === 'messages') {        
              $$('.demo-remove-callback').on('deleted', function () {
@@ -530,6 +441,7 @@ function initFramework() {
         $$('.statusbar-overlay').removeClass('with-panel-left with-panel-right');
     });
 	
+	// welcomescreen
 	ipc = new app.pages.IndexPageController(fw7, $$);
 
 }
@@ -590,7 +502,7 @@ app.settings.get = function(key)
 //------
 //  calendar picker 
 //-----
-
+/*
 var today = new Date();
  
 var pickerInline = myApp.picker({
@@ -616,7 +528,7 @@ var pickerInline = myApp.picker({
         // Months
         {
             values: ('0 1 2 3 4 5 6 7 8 9 10 11').split(' '),
-            displayValues: ('Janvier Février Mars Avril Mai Juin Jullet Aout Septembre Octobre Novembre Decembre').split(' '),
+            displayValues: ('Janvier Février Mars Avril Mai Juin Juillet Aout Septembre Octobre Novembre Decembre').split(' '),
             textAlign: 'left'
         },
         // Days
@@ -659,3 +571,5 @@ var pickerInline = myApp.picker({
         }
     ]
 });                
+
+*/

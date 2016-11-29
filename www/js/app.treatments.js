@@ -180,7 +180,6 @@ app.treatments.displayPageTreatmentReport = function(page) {
         // show loading icon
         //mofLoading(true);
         
-        //objUserTreatments
         
         //i18n.t('description.currentlyactivechats')
         
@@ -486,26 +485,17 @@ app.treatments.localNotificationCancelAll = function() {
 		console.log('All notifications have been canceled');
 		alert("done");
 	}, this);
-	/*
-  window.plugin.notification.local.cancelAll(function() {
-             console.log('All notifications have been canceled');
-        }); 
-		*/
 };
 
 app.treatments.localNotificationGetScheduledIds = function() {
-	cordova.plugins.notification.local.getAll(function (notifications) {
-console.log(notifications);
-});
-/*
-  window.plugin.notification.local.getScheduledIds( function (scheduledIds) {
-             console.log('Scheduled IDs: ' + scheduledIds.join(' ,'));
-        }); 
-		*/
+	cordova.plugins.notification.local.getAll(function(notifications) {
+		console.log(notifications);
+	});
 };
 
 // add new local notification for upcoming days 
 app.treatments.processLocalNotification = function(data) {
+		console.log('processLocalNotification');
    
         var now = new Date().getTime();
         //_30_seconds_from_now = new Date(now + 30*1000);

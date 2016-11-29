@@ -420,15 +420,15 @@ i.mhbx-logo{
 
 
 span.navbar-logo {
-  width: 50%;
-  height: 35px;
+  width: 80%;
+  height: 45px;/*35*/
   background: url(../img/logo.svg) no-repeat center;
   -webkit-background-size: 100% auto;
   background-size: 100% auto;
   display: block;
   margin-left: auto;
-  margin-right:   auto;
-  margin-top: 8px;
+  margin-right: auto;
+  margin-top: 4px;/*8*/
 }
 
 .theme-teal {

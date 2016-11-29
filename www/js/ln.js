@@ -3,9 +3,14 @@ var ln =
     language:
     {
         //Default values
-        code: 'en',
+        code: 'fr',
+        local: 'French',
+        international: 'French'
+		/*
+		code: 'en',
         local: 'English',
         international: 'English'
+		*/
     },
     
     init: function()

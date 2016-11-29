@@ -30,7 +30,7 @@
 <link rel="stylesheet" type="text/css" href="framework7/css/custom_welcomescreen.css">
 <link rel="stylesheet" type="text/css" href="framework7/css/welcomescreen.css">
 <link rel="stylesheet" type="text/css" href="framework7/css/material-icons.css">
-<link rel="stylesheet" type="text/css" href="framework7/css/kitchen-sink.css">
+<!--<link rel="stylesheet" type="text/css" href="framework7/css/kitchen-sink.css">-->
 <link rel="stylesheet" type="text/css" href="css/nprogress.css" >
 <link rel="stylesheet" type="text/css" href="css/ionicons.min.css">
 <!-- Path to your custom app styles-->
@@ -57,7 +57,7 @@
 
       <div class="navbar change-color">
         <div class="nav-inner ">
-          <div class=" sliding"><span class="navbar-logo"></span></div>
+          <div class=" sliding"><a href="/index.html?nocache=1"><span class="navbar-logo"></span></a></div>
    <!--  <div  data-controltype="image" >
          <img src="img/logo.png" alt="MyHebdoBox" width="90%">
           <img src="img/logo.svg" alt="MyHebdoBox" width="50%">
@@ -66,7 +66,7 @@
       </div>
        
       <div class="pages">
-        <div data-page="index" class="page navbar-fixed toolbar-fixed " >
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
           <div class="toolbar tabbar">
             <div class="toolbar-inner">
               <a href="#tab-observance" class="tab-link active"><i class="material-icons">loupe</i><span class="tabbar-label">Observance</span></a>
@@ -78,7 +78,7 @@
           <div class="tabs-swipeable-wrap ">
             <div class="tabs">
               <!-- PUZZLE PART --> 
-              <div id="tab-observance" class="page-content tab  active" >
+              <div id="tab-observance" class="page-content tab active">
                 <div class="content-block puzzle_animation">
                   <embed src="img/puzzle_animation.svg"  width="100%">
                  <div class="content-block">
@@ -130,18 +130,7 @@
                           </div>
                         </a>
                       </li>
-                       <li>
-                        <a href="/frames/treatments.html?nocache=1" class="item-link item-content">
-                          <div class="item-media"><i class="mhb-traitement"></i></div>
-                          <div class="item-inner">
-                            <div class="item-title-row">
-                              <div class="item-title">Taitement titre </div>
-                            </div>
-                            <div class="item-subtitle">Capital - Delhi</div>
-                            <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
-                          </div>
-                        </a>
-                      </li>
+             
                        <li>
                         <a href="/frames/treatments.html?nocache=1" class="item-link item-content">
                           <div class="item-media"><i class="mhb-traitement"></i></div>
@@ -159,7 +148,8 @@
 
                   <div class="content-block">
                     <p class="buttons-row">
-                      <a href="frames/add_new_traitment.html?nocache=1" class="center button button-big button-fill button-raised color-green link">Nouveau traitement</a>
+                      <a href="frames/prescription.html?nocache=1" class="center button button-big button-fill button-raised color-green link">Nouveau traitement</a>
+					  <!-- <a href="frames/add_new_traitment.html?nocache=1" class="center button button-big button-fill button-raised color-green link">Nouveau traitement</a> -->
                     </p>
                   </div>
                 </div>
@@ -176,7 +166,7 @@
     <div class="toolbar toolbar-bottom">
       <div class="toolbar-inner">
         <div class="navbar-tool">
-          <a href="frames/taking.html?nocache=1" class="link">
+          <a href="frames/taking.html?nocache=1" class="link no-animation">
             <div class="navbar-tool">
               <i class="material-icons md-36">add_alert</i>
             </div>
@@ -185,14 +175,14 @@
         </div>
         <!--    <a href="#tab-1" class="link"><div class="icon"><i class="material-icons">local_pharmacy</i></div><div class="icon-name">Prise</div></a> -->
         <div class="navbar-tool">
-          <a href="frames/profile.html?nocache=1" class="link">
+          <a href="frames/profile.html?nocache=1" class="link no-animation">
             <div class="icon navbar-tool">
               <i class="material-icons md-36">account_box</i>
             </div>
           </a>
         </div>
         <div class="navbar-tool">
-          <a href="frames/contact.html?nocache=1" class="link">
+          <a href="frames/network.html?nocache=1" class="link no-animation">
             <div class="icon navbar-tool"><i class="material-icons md-36">contact_phone</i></div>
             <div class="icon-name"> </div>
           </a>
@@ -228,8 +218,6 @@
 <!--<script type="text/javascript" charset="utf-8" src="js/app.audio.js"></script>-->
 
 <script type="text/javascript" charset="utf-8" src="js/pages/IndexPageController.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/peer.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/app.peerjs.js"></script>
 <!--<script type="text/javascript" charset="utf-8" src="js/my-app.js"></script>-->
 
 <script type="text/javascript" charset="utf-8">
@@ -239,7 +227,6 @@ var updateStatusBar = navigator.userAgent.match(/iphone|ipad|ipod/i) && parseInt
 if (updateStatusBar) {
   //document.body.style.webkitTransform = 'translate3d(0, 20px, 0)';
   document.body.style.marginTop = '0px';
-
 }
 
 app.initialize();

@@ -13,7 +13,9 @@ app.pages.IndexPageController = function (app, $$) {
   (function () {
     var options = {
 	  'open': false,
-      'bgcolor': '#0da6ec',
+	  'closeButtonText': 'Quitter',
+      'bgcolor': '#00A77F',
+		//	  '#0da6ec',
       'fontcolor': '#fff',
       'onOpened': function () {
         console.log("welcome screen opened");
@@ -25,24 +27,23 @@ app.pages.IndexPageController = function (app, $$) {
     welcomescreen_slides = [
       {
         id: 'slide0',
-        picture: '<div class="tutorialicon"><img src="img/ecare-w.png" width="256" height="256"><!--♥--></div>',
-        text: 'Bienvenue dans le tutorial de présentation. In the <a class="tutorial-next-link" href="#">next steps</a> we will guide you through a manual that will teach you how to use this app.'
-		//text: 'Bienvenue dans le tutorial de présentation. In the <a class="tutorial-next-link" href="#">next steps</a> we will guide you through a manual that will teach you how to use this app.'
+        picture: '<div class="tutorialicon"><img src="img/logo_white.svg" width="256" height="256"></div>',
+        text: 'Bienvenue dans le tutorial de présentation. Dans les <a class="tutorial-next-link" href="#">prochaines étapes</a>, nous allons vous guider à travers ce manuel pour vous apprendre comment utiliser cette application.'
       },
       {
         id: 'slide1',
-        picture: '<div class="tutorialicon">✲</div>',
-        text: 'Prend en charge toute une variété de dispositifs connectés, de sorte que vous pouvez suivre toutes vos fonctions vitales partout et à tout moment.'
+		picture: '<div class="tutorialicon"><img src="img/puzzle_animation.svg" width="256" height="256"><!--♫--></div>',
+        text: 'L\'horloge affiche les couleurs en fonction de vos prises de médicament' 
       },
       {
         id: 'slide2',
-        picture: '<div class="tutorialicon">♫</div>',
-        text: 'This is slide 3'
+		picture: '<div class="tutorialicon">✲</div>',
+        text: 'Prend en charge toute une variété de dispositifs connectés, de sorte que vous pouvez suivre toutes vos fonctions vitales partout et à tout moment.'
       },
       {
         id: 'slide3',
         picture: '<div class="tutorialicon">☆</div>',
-        text: 'Thanks for reading! Enjoy this app or go to <a class="tutorial-previous-slide" href="#">previous slide</a>.<br><br><a class="tutorial-close-btn" href="#">End Tutorial</a>'
+        text: 'Merci d\'avoir lu avec attention! Appréciez maintenant cette application ou revenir au <a class="tutorial-previous-slide" href="#">slide précédent</a>.<br><br><a class="tutorial-close-btn" href="#">Fin du Tutorial</a>'
       }
     ],
     welcomescreen = app.welcomescreen(welcomescreen_slides, options);
