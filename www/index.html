@@ -70,7 +70,7 @@
           <div class="toolbar tabbar">
             <div class="toolbar-inner">
               <a href="#tab-observance" class="tab-link active"><i class="material-icons">loupe</i><span class="tabbar-label">Observance</span></a>
-              <a href="#tab-traitement" class="tab-link"><i class="material-icons">storage</i><span class="tabbar-label">Traitement</span>
+              <a href="#tab-prescription" class="tab-link"><i class="material-icons">storage</i><span class="tabbar-label">Traitement</span>
               </a>
             </div>
           </div>
@@ -81,8 +81,8 @@
               <div id="tab-observance" class="page-content tab active">
                 <div class="content-block puzzle_animation">
                   <embed src="img/puzzle_animation.svg"  width="100%">
-                 <div class="content-block">
-                   <div class="content-block-inner"> <p style="text-align:center;">L'horloge affiche les couleurs en fonction de vos prises a effectuer.</p> </div>
+				  <div class="content-block">
+                      <div id="observance_home_description" class="content-block-inner clean"><p style="text-align:center;">Aucun traitement à prendre</p></div>
                   </div>
  
                 <!-- This block will be inset only on tablets -->
@@ -90,9 +90,18 @@
                 </div>
               </div>
               <!-- TRAITEMENT PART  -->  
-              <div  id="tab-traitement" class="page-content tab  no-toolbar">
+              <div id="tab-prescription" class="page-content tab  no-toolbar">
                 <div class="content-block content-block-treatment">
-                  <div class="list-block media-list">
+				
+				  <div class="content-block">
+                    <p class="buttons-row">
+                      <a href="frames/prescription.html?nocache=1" class="center button xxbutton-big button-fill button-raised color-teal link no-animation">Scanner votre ordonnance</a>
+					  <!-- <a href="frames/add_new_traitment.html?nocache=1" class="center button button-big button-fill button-raised color-green link">Nouveau traitement</a> -->
+                    </p>
+                  </div>
+				  
+                  <div id="prescription-list" class="list-block media-list">
+					<!--
                     <ul>
                       <li>
                         <a href="/frames/treatments.html?nocache=1" class="item-link item-content">
@@ -117,41 +126,12 @@
                             <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
                           </div>
                         </a>
-                      </li>
-                       <li>
-                        <a href="/frames/treatments.html?nocache=1" class="item-link item-content">
-                          <div class="item-media"><i class="mhb-traitement"></i></div>
-                          <div class="item-inner">
-                            <div class="item-title-row">
-                              <div class="item-title">Taitement titre </div>
-                            </div>
-                            <div class="item-subtitle">Capital - Delhi</div>
-                            <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
-                          </div>
-                        </a>
-                      </li>
-             
-                       <li>
-                        <a href="/frames/treatments.html?nocache=1" class="item-link item-content">
-                          <div class="item-media"><i class="mhb-traitement"></i></div>
-                          <div class="item-inner">
-                            <div class="item-title-row">
-                              <div class="item-title">Taitement titre </div>
-                            </div>
-                            <div class="item-subtitle">Capital - Delhi</div>
-                            <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
-                          </div>
-                        </a>
-                      </li>
+                      </li>                 
                     </ul>
+					  -->
                   </div>
-
-                  <div class="content-block">
-                    <p class="buttons-row">
-                      <a href="frames/prescription.html?nocache=1" class="center button button-big button-fill button-raised color-green link">Nouveau traitement</a>
-					  <!-- <a href="frames/add_new_traitment.html?nocache=1" class="center button button-big button-fill button-raised color-green link">Nouveau traitement</a> -->
-                    </p>
-                  </div>
+				                
+				  
                 </div>
               </div>
             </div>
@@ -168,7 +148,7 @@
         <div class="navbar-tool">
           <a href="frames/taking.html?nocache=1" class="link no-animation">
             <div class="navbar-tool">
-              <i class="material-icons md-36">add_alert</i>
+              <i id="menu_alert" class="material-icons md-36">add_alert</i>
             </div>
             <div class="icon-name"></div>
           </a>

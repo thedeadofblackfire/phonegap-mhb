@@ -70,7 +70,8 @@ app.auth.handleLogin = function(u,p,fromform) {
                         window.localStorage["username"] = u;
                         window.localStorage["password"] = p; 			
                         //window.sessionStorage["user_id"] = res.user.user_id; 
-                        window.sessionStorage.setItem('user', JSON.stringify(res.user)); // should be localstorage with a timestamp cache
+                        //window.sessionStorage.setItem('user', JSON.stringify(res.user)); // should be localstorage with a timestamp cache
+						window.localStorage.setItem('user', JSON.stringify(res.user));
 
                         //dbAppUser.put(res.user);
                         

@@ -6,8 +6,94 @@ var capturedPhoto = 0;
 var uploadedPhoto = 0;
 var hasPic = 0;
 var prescriptionURI;
+var current_prescription_page = 0;
+var init_prescription_called = false; // prevent multiple called
+
+// INIT PRESCRIPTIONS
+var dbAppUserPrescriptions = dbAppUserPrescriptions || fwkStore.DB("user_prescriptions");
+var objUserPrescriptions = {};
 
 app.prescription = {};
+
+app.prescription.init = function() {
+	console.log('PRESCRIPTION - init');
+	
+    objUserPrescriptions = dbAppUserPrescriptions.get();   
+	
+    dbAppUserPrescriptions.set(objUserPrescriptions);
+};
+
+// load last prescriptions
+app.prescription.load = function(forceReboot) {	
+	var forceReboot = forceReboot || false;    
+	   
+    // show loading icon
+    //mofLoading(true);
+      
+    if (forceReboot) current_prescription_page = 0;
+	
+	if (!forceReboot && init_prescription_called) return true;
+	else init_prescription_called = true;
+		
+    current_prescription_page++;
+    var limit = 10;
+	
+	console.log('PRESCRIPTION - loadPrescription forceReboot='+forceReboot+' page='+current_prescription_page);	
+
+	//https://vendor.eureka-platform.com/api/mobile/getprescriptions?office_seq=1000&patient_user_seq=21ea938c29f24fcd9eaa8f598f2f11e5&limit=10&page=1
+    $.ajax({
+        url: app_settings.api_url+"/getprescriptions",
+        datatype: 'json',      
+        type: "post",
+        data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, limit: limit, page: current_prescription_page},   
+        success:function(res){                    			
+            console.log('PRESCRIPTION data below:');
+			console.log(res);
+     
+            var str = '';
+			if (res.items) {
+				str += '<ul>'; 
+				$.each(res.items, function(k, v) { 
+					console.log(k+' | '+v.prescription_date);
+					
+					var title = '';
+					title = 'Ordonnance du '+v.prescription_date;
+					var description = '';
+					description = v.status;
+					var doctor = '';
+					if (v.prescription_doctor) doctor = v.prescription_doctor;
+					else doctor = 'Prescripteur non renseigné';
+					str += '<li><a href="/frames/treatments.html?nocache=1" class="item-link item-content">';
+					str += '<div class="item-media"><i class="mhb-traitement"></i></div>';
+					str += '<div class="item-inner clean">';
+					str += '<div class="item-title-row"><div class="item-title">'+title+'</div></div>';
+					str += '<div class="item-subtitle">'+doctor+'</div>';
+					str += '<div class="item-text">'+description+'</div>';
+					str += '</div>';
+					str += '</a></li>';
+						
+					objUserPrescriptions[k] = v;
+				});  
+				str += '</ul>'; 
+			}
+			
+			if (str == '') str = 'Aucune ordonnance';
+			
+			if (str != '') $('#prescription-list').html(str);
+                            
+            //mofLoading(false); 
+         
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+			//mofLoading(false);  
+            alert('Error loading datas, try again!');
+			console.log(textStatus);
+			console.log(errorThrown);
+        }
+    });
+           
+    return true;
+};
 
 //Success callback
 app.prescription.win = function(r) {    

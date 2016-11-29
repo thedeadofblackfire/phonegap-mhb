@@ -59,7 +59,8 @@ var app = {
             //console.log(a);
         
             // get automatically user from session
-            objUser = window.sessionStorage.getItem('user');
+            objUser = window.localStorage.getItem('user');
+			//objUser = window.sessionStorage.getItem('user');
             
             if (objUser) {
                 objUser = JSON.parse(objUser);	
@@ -114,9 +115,9 @@ var app = {
             */
     
             initFramework();
-            
-            
-            objUser = window.sessionStorage.getItem('user');
+                        
+            objUser = window.localStorage.getItem('user');
+			//objUser = window.sessionStorage.getItem('user');
             if (objUser) {
                 objUser = JSON.parse(objUser);	
                 console.log('retrieved user: ', objUser);
@@ -171,14 +172,13 @@ var app = {
 
 function initAfterLogin() {
   doRefresh = true;
-  
-  //app.treatments.localNotificationInit();
-             
-  $('#nickname').html(objUser.first_name);
-            		
+                     		
   //language
   $('#selectlanguage').val(baseLanguage);                        
   $('body').i18n();
+  
+  // get last prescriptions list
+  if (Object.keys(objUser).length > 0) app.prescription.load();
         
 }
 
@@ -305,7 +305,8 @@ function initFramework() {
         swipePanel: 'left',
         swipePanelActiveArea: 30,
 		modalTitle: 'MyhebdoBox',
-        animateNavBackIcon: true
+        animateNavBackIcon: true,
+		init: false //Disable App's automatica initialization
     });
 	
     // Expose Internal DOM library
@@ -313,25 +314,43 @@ function initFramework() {
     
     mainView = fw7.addView('.view-main', {
         // Because we use fixed-through navbar we can enable dynamic navbar
-        dynamicNavbar: false
+        dynamicNavbar: false,
 		//domCache: true
     });
     
     // Events for specific pages when it initialized
-    //$$(document).on('pageInit', function (e) {
+	/*
+    $$(document).on('pageInit', function (e) {
+		console.log(e);
+		console.log('pageinit');
+	});
+	*/
+	/*
+	fw7.onPageInit('index', function (page) {
+	  console.log('index initialized');
+	  console.log(page);
+	});
+	*/	 
+ 
     $$(document).on('pageBeforeInit', function (e) {
+		//console.log(e);
         var page = e.detail.page;
         console.log('PAGE '+page.name);
         // handle index loader
-        if (page.name === 'index' || page.name === 'index.html') {
-            // to prevent back url on login
-            //alert(page.name);
+        if (page.name === 'index' || page.name === 'index.html') {			
+            // to prevent back url on login  
+			
             if (Object.keys(objUser).length == 0) {        
-               var result = app.auth.checkPreAuth(false); 
+               var result = app.auth.checkPreAuth(false);
+
+			   app.treatments.displayPageHome(page);
+				
                if (!result) return;
             }                 
            
-            initAfterLogin();                    
+            initAfterLogin();  
+			
+			app.treatments.displayPageHome(page);			
         }
         
         if (page.name === 'login') {
@@ -342,20 +361,12 @@ function initFramework() {
             }
   
         }
-        
-        if (page.name === 'device' || page.name === 'device.html' ) {
-           console.log('query address='+page.query.address);
-        
-           // $('.device-page').html('<p>address:'+page.query.address+'</p>');
-           // app.ui.displayDevicePage(page);          
-        }
-        
+               
 
-      if (page.name === 'profile'){
+        if (page.name === 'profile'){
             console.log('this is profile');
             //console.log('login.html pageinit'); 
-            mainView.loadPage('frames/profile.html');
-       
+            mainView.loadPage('frames/profile.html');       
         }
       
 
@@ -441,6 +452,9 @@ function initFramework() {
         $$('.statusbar-overlay').removeClass('with-panel-left with-panel-right');
     });
 	
+	//And now we initialize app
+	fw7.init();
+	
 	// welcomescreen
 	ipc = new app.pages.IndexPageController(fw7, $$);
 
@@ -505,7 +519,7 @@ app.settings.get = function(key)
 /*
 var today = new Date();
  
-var pickerInline = myApp.picker({
+var pickerInline = fw7.picker({
     input: '#picker-date',
     container: '#picker-date-container',
     toolbar: false,
