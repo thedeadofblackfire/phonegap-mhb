@@ -50,34 +50,40 @@ app.prescription.load = function(forceReboot) {
             console.log('PRESCRIPTION data below:');
 			console.log(res);
      
+			var hasPrescriptions = false;
             var str = '';
 			if (res.items) {
 				str += '<ul>'; 
 				$.each(res.items, function(k, v) { 
 					console.log(k+' | '+v.prescription_date);
 					
-					var title = '';
-					title = 'Ordonnance du '+v.prescription_date;
-					var description = '';
-					description = v.status;
-					var doctor = '';
-					if (v.prescription_doctor) doctor = v.prescription_doctor;
-					else doctor = 'Prescripteur non renseigné';
-					str += '<li><a href="/frames/treatments.html?nocache=1" class="item-link item-content">';
-					str += '<div class="item-media"><i class="mhb-traitement"></i></div>';
-					str += '<div class="item-inner clean">';
-					str += '<div class="item-title-row"><div class="item-title">'+title+'</div></div>';
-					str += '<div class="item-subtitle">'+doctor+'</div>';
-					str += '<div class="item-text">'+description+'</div>';
-					str += '</div>';
-					str += '</a></li>';
+					// we exclude prescription imported
+					if ((v.prescription_source == '' || v.prescription_source == 'mobile') && v.attachment_type != 'import') {
+						var title = '';
+						title = 'Ordonnance du '+v.prescription_date;
+						var description = '';
+						description = v.status;
+						var doctor = '';
+						if (v.prescription_doctor) doctor = v.prescription_doctor;
+						else doctor = 'Prescripteur non renseigné';
+						str += '<li><a href="/frames/treatments.html?nocache=1" class="item-link item-content">';
+						str += '<div class="item-media"><i class="mhb-traitement"></i></div>';
+						str += '<div class="item-inner clean">';
+						str += '<div class="item-title-row"><div class="item-title">'+title+'</div></div>';
+						str += '<div class="item-subtitle">'+doctor+'</div>';
+						str += '<div class="item-text">'+description+'</div>';
+						str += '</div>';
+						str += '</a></li>';
+							
+						hasPrescriptions = true;
 						
-					objUserPrescriptions[k] = v;
+						objUserPrescriptions[k] = v;
+					}
 				});  
 				str += '</ul>'; 
 			}
 			
-			if (str == '') str = 'Aucune ordonnance';
+			if (!hasPrescriptions) str = 'Aucune ordonnance';
 			
 			if (str != '') $('#prescription-list').html(str);
                             
