@@ -47,7 +47,7 @@ app.treatments.load = function(forceReboot) {
     if (forceReboot) current_treatment_page = 0;
 	
     current_treatment_page++;
-    var last_days = 7;
+    var last_days = 28; // 7
 
 	//https://vendor.eureka-platform.com/api/mobile/gettreatment?office_seq=1000&patient_user_seq=21ea938c29f24fcd9eaa8f598f2f11e5&last_days=7&page=1
     $.ajax({
@@ -517,9 +517,8 @@ app.treatments.localNotificationInit = function() {
 		//JSON.stringify(json)
 		
         // need to have the objUser preloaded
-		if (customData && customData.delivery_dt) {
-			var rappel = false; // check if 2nd notification
-			app.treatments.createPopupDelivery(customData.delivery_dt, rappel);
+		if (customData && customData.delivery_dt) {	
+			app.treatments.createPopupDelivery(customData.delivery_dt, customData.reminder);
 		}
 		
 		// @todo if network, send info to myEureka
@@ -617,7 +616,7 @@ app.treatments.processLocalNotification = function(data) {
                                     text: notification_message,
                                     sound: url_sound,
                                     badge: 1,
-                                    data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt, 'notification_id': notification_id },                                 
+                                    data: {'message': 'delivery', 'delivery_dt': v_delivery.delivery_dt, 'reminder': false },                                 
                                     ongoing: true,
 									//icon: 'res://icon',
 									icon: 'file://img/notification_delivery.png',
@@ -638,7 +637,7 @@ app.treatments.processLocalNotification = function(data) {
                                     text: notification_message,
                                     sound: url_sound,
                                     badge: 1,
-                                    data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt, 'notification_id': notification_id_reminder },                                   
+                                    data: {'message': 'reminder', 'delivery_dt': v_delivery.delivery_dt, 'reminder': true },                                   
                                     ongoing: true,
 									icon: 'file://img/notification_reminder.png',
 								    smallIcon: 'res://ic_popup_reminder',                             
@@ -751,13 +750,15 @@ app.treatments.processLocalNotification = function(data) {
 };
 
 // taking dialog: app.treatments.createPopupDelivery('2014-10-06 10:00:00');
+// isReminder: check if reminder notification after 30min	
 app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
+	var isReminder = isReminder || false;
     console.log('createPopupDelivery '+delivery_dt+' '+isReminder);
     //console.log(objUserTreatments);
     var day = delivery_dt.substr(0,10);
     if (objUserTreatments[day]) {
         var delivery_item = objUserTreatments[day].children[delivery_dt];
-        //console.log(delivery_item);
+        console.log(delivery_item);
 
 		// @todo ecran de la prise ici
 		

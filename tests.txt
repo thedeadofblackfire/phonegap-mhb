@@ -17,8 +17,29 @@ cordova.plugins.notification.local.schedule({
 					led: '#ff00ff'
                                   
                                 });
-								
-								
+
+
+// prise								
+cordova.plugins.notification.local.schedule({
+    id: 1,
+	title: 'Valider la prise de 15:00',
+    text: "C'est l'heure de prendre vos médicaments!",
+    sound: 'file://audio/fr_alarm_exit.mp3',
+    icon: 'file://img/notification_delivery.png',
+	smallIcon: 'res://ic_popup_reminder',
+    data: { 'message': 'delivery', delivery_dt: '2016-12-01 15:00:00', 'reminder': false }
+});		
+
+// rappel
+cordova.plugins.notification.local.schedule({
+    id: 9201612011500,
+	title: 'RAPPEL : Valider la prise de 15:00',
+    text: "C'est l'heure de prendre vos médicaments!",
+    sound: 'file://audio/fr_alarm_exit.mp3',
+    icon: 'file://img/notification_reminder.png',
+	smallIcon: 'res://ic_popup_reminder',
+    data: { 'message': 'reminder', delivery_dt: '2016-12-01 15:00:00', 'reminder': true }
+});							
 								
 								
 cordova.plugins.notification.local.schedule({
