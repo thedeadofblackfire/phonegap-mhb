@@ -71,7 +71,7 @@ app.date.initTranslate = function() {
     }
 };
 
-//2013-06-03 08:00:00
+//2013-06-03 08:00:00 to timestamp (1480579817762)
 app.date.formatDateToTimestamp = function(d) {
     //new Date().getTime()
     //(year, month, day, hours, minutes, seconds, milliseconds)    

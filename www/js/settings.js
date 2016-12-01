@@ -10,5 +10,6 @@ var app_settings = {
 		'morning': {'section': 'morning', 'time_start': '0600', 'time_end': '1200'},
 		'noon': {'section': 'noon', 'time_start': '1200', 'time_end': '1800'},
 		'evening': {'section': 'evening', 'time_start': '1800', 'time_end': '2400'},
-	}
+	},
+	'reminder_seconds': 1800
 };

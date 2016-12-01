@@ -55,7 +55,7 @@ app.prescription.load = function(forceReboot) {
 			if (res.items) {
 				str += '<ul>'; 
 				$.each(res.items, function(k, v) { 
-					console.log(k+' | '+v.prescription_date);
+					//console.log('PRESCRIPTION '+k+' | '+v.prescription_date);
 					
 					// we exclude prescription imported
 					if ((v.prescription_source == '' || v.prescription_source == 'mobile') && v.attachment_type != 'import') {

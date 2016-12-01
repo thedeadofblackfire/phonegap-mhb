@@ -518,7 +518,8 @@ app.treatments.localNotificationInit = function() {
 		
         // need to have the objUser preloaded
 		if (customData && customData.delivery_dt) {
-			app.treatments.createPopupDelivery(customData.delivery_dt);
+			var rappel = false; // check if 2nd notification
+			app.treatments.createPopupDelivery(customData.delivery_dt, rappel);
 		}
 		
 		// @todo if network, send info to myEureka
@@ -540,10 +541,15 @@ app.treatments.localNotificationInit = function() {
 	*/
 };
 
+app.treatments.localNotificationCancel = function(id) {
+	cordova.plugins.notification.local.cancel(id, function() {
+		console.log("notification cancel id="+id);
+	});
+};
+
 app.treatments.localNotificationCancelAll = function() {
 	cordova.plugins.notification.local.cancelAll(function() {
-		console.log('All notifications have been canceled');
-		alert("done");
+		console.log('All notifications have been canceled');		
 	}, this);
 };
 
@@ -554,6 +560,7 @@ app.treatments.localNotificationGetScheduledIds = function() {
 };
 
 // add new local notification for upcoming days 
+// https://github.com/katzer/cordova-plugin-local-notifications/wiki/04.-Scheduling
 app.treatments.processLocalNotification = function(data) {
 		console.log('processLocalNotification');
    
@@ -565,25 +572,27 @@ app.treatments.processLocalNotification = function(data) {
         // status: pending(0), completed(1), inprogress(2) (mix of completed/pending), completedwitherror(3)
         // ios limits to first 64 scheduled local notifications.
         $.each(data, function(k_day, v_day) { 
-            console.log(k_day+' | '+v_day.delivery_day);
+            console.log('day '+k_day+' | '+v_day.delivery_day);
             
             // force update in storage
             objUserTreatments[k_day] = v_day;
                       
+			// create local notification with id=delivery_day+delivery_time (201611250800)		  
             if (v_day.status_today === app.treatments.constant.STATUS_TODAY_AFTER || v_day.status_today === app.treatments.constant.STATUS_TODAY) {
                 if (v_day.status === app.treatments.constant.STATUS_PENDING || v_day.status === app.treatments.constant.STATUS_INPROGRESS) {
                      $.each(v_day.children, function(k_delivery, v_delivery) { 
-                        console.log(k_delivery+' | '+v_delivery.delivery_dt+ ' | '+v_delivery.status);
+                        console.log('delivery '+k_delivery+' | '+v_delivery.delivery_dt+ ' | '+v_delivery.status);
                         
                         //if (v_delivery.status === app.treatments.constant.STATUS_PENDING) {
                    
-						/*
-						cordova.plugins.notification.local.isPresent(201611021900, function (present) {
-							alert(present ? "present" : "not found");
+						var notification_id = '' + v_delivery.delivery_day + v_delivery.delivery_time; //uniq, for android it must be convert to integer
+						
+						cordova.plugins.notification.local.isPresent(notification_id, function (present) {
+							console.log(present ? notification_id+" present" : notification_id+" not found");
 						});
-						*/
+						
 
-                            var notification_id = '' + v_delivery.delivery_day + v_delivery.delivery_time; //uniq, for android it must be convert to integer
+                           				
                             var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt);                       
                             var notification_title = 'Valider la prise de '+v_delivery.display_delivery_time; //Reminder
                             var notification_message = "C'est l'heure de prendre vos médicaments!";
@@ -593,7 +602,7 @@ app.treatments.processLocalNotification = function(data) {
                                 return true;
                             }
                         
-                            console.log(notification_id + ' | ' + notification_title);
+                            console.log('notification id='+notification_id + ' title=' + notification_title+' at='+notification_date);
                             
                             var url_sound = 'sounds/fr_alarm01.mp3';
                             if (objConfig.platform == 'Android') {
@@ -608,8 +617,7 @@ app.treatments.processLocalNotification = function(data) {
                                     text: notification_message,
                                     sound: url_sound,
                                     badge: 1,
-                                    data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt },
-                                    //autoCancel: true,
+                                    data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt, 'notification_id': notification_id },                                 
                                     ongoing: true,
 									//icon: 'res://icon',
 									icon: 'file://img/notification_delivery.png',
@@ -617,6 +625,24 @@ app.treatments.processLocalNotification = function(data) {
                                     //repeat: 5, // 2 minutes
                                     //icon: 'file:///android_asset/www/img/flower128.png',                               
                                     at: notification_date
+                                });
+								
+							// added notification rappel + 30 min(to cancel when click)	
+							var notification_id_reminder = '9' + v_delivery.delivery_day + v_delivery.delivery_time;
+							var notification_date_reminder = notification_date + app_settings.reminder_second;                       
+                           	console.log('notification REMINDER id='+notification_id_reminder + ' at=' + notification_date_reminder);
+                            
+							cordova.plugins && cordova.plugins.notification.local.schedule({
+                                    id: notification_id_reminder,
+                                    title: 'RAPPEL : Valider la prise de '+v_delivery.display_delivery_time,
+                                    text: notification_message,
+                                    sound: url_sound,
+                                    badge: 1,
+                                    data: {'message': 'alert', 'delivery_dt': v_delivery.delivery_dt, 'notification_id': notification_id_reminder },                                   
+                                    ongoing: true,
+									icon: 'file://img/notification_reminder.png',
+								    smallIcon: 'res://ic_popup_reminder',                             
+                                    at: notification_date_reminder
                                 });
 														
                         //}
@@ -725,14 +751,27 @@ app.treatments.processLocalNotification = function(data) {
 };
 
 // taking dialog: app.treatments.createPopupDelivery('2014-10-06 10:00:00');
-app.treatments.createPopupDelivery = function(delivery_dt) {
-    console.log('createPopupDelivery '+delivery_dt);
+app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
+    console.log('createPopupDelivery '+delivery_dt+' '+isReminder);
     //console.log(objUserTreatments);
     var day = delivery_dt.substr(0,10);
     if (objUserTreatments[day]) {
         var delivery_item = objUserTreatments[day].children[delivery_dt];
         //console.log(delivery_item);
 
+		// @todo ecran de la prise ici
+		
+		// cancel le rappel si ce n'est pas le rappel with suffixe 9
+		if (!isReminder) {
+			var notification_reminder_id = '9' + delivery_item.delivery_day + delivery_item.delivery_time; 		
+			app.treatments.localNotificationCancel(notification_reminder_id);
+		}
+		
+		
+		
+		
+		
+		
         var html_detail = '';
         
         var currentTodayTime = app.date.getTodayTime();
