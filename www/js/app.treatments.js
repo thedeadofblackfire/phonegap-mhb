@@ -589,13 +589,65 @@ app.treatments.processLocalNotification = function(data) {
 						cordova.plugins.notification.local.isPresent(notification_id, function (present) {
 							console.log(present ? notification_id+" present" : notification_id+" not found");
 							if (!present) {
-								var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt); 
-								console.log('not present '+notification_date);
+								//var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt); 
+								//console.log('not present '+notification_date);
+								
+								var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt);                       
+								var notification_title = 'Valider la prise de '+v_delivery.display_delivery_time; //Reminder
+								var notification_message = "C'est l'heure de prendre vos médicaments!";
+					   
+								if (v_delivery.status === app.treatments.constant.STATUS_INPROGRESS && now > notification_date.getTime()) {
+									console.log('Exclude '+notification_id + ' | ' + notification_title);
+									return true;
+								}
+							
+								console.log('notification DELIVERY id='+notification_id + ' title=' + notification_title+' at='+notification_date);
+								
+								var url_sound = 'sounds/fr_alarm01.mp3';
+								if (objConfig.platform == 'Android') {
+									url_sound = 'file:///android_asset/www/' + url_sound; //file:///android_asset/www/audio/aqua.mp3                               
+								}
+								//url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
+								url_sound = 'file://audio/fr_alarm_exit.mp3';
+								
+								cordova.plugins && cordova.plugins.notification.local.schedule({
+										id: notification_id,
+										title: notification_title,
+										text: notification_message,
+										sound: url_sound,
+										badge: 1,
+										data: {'message': 'delivery', 'delivery_dt': v_delivery.delivery_dt, 'reminder': false },                                 
+										ongoing: true,
+										//icon: 'res://icon',
+										icon: 'file://img/notification_delivery.png',
+										smallIcon: 'res://ic_popup_reminder',
+										//repeat: 5, // 2 minutes
+										//icon: 'file:///android_asset/www/img/flower128.png',                               
+										at: notification_date
+								});
+									
+								// added notification reminder + 30 min(to cancel when click)	
+								var notification_id_reminder = '9' + v_delivery.delivery_day + v_delivery.delivery_time;
+								var notification_date_reminder = new Date(notification_date.getTime() + app_settings.reminder_seconds * 1000);                       
+								console.log('notification REMINDER id='+notification_id_reminder + ' at=' + notification_date_reminder);
+								
+								cordova.plugins && cordova.plugins.notification.local.schedule({
+										id: notification_id_reminder,
+										title: 'RAPPEL : Valider la prise de '+v_delivery.display_delivery_time,
+										text: notification_message,
+										sound: url_sound,
+										badge: 1,
+										data: {'message': 'reminder', 'delivery_dt': v_delivery.delivery_dt, 'reminder': true },                                   
+										ongoing: true,
+										icon: 'file://img/notification_reminder.png',
+										smallIcon: 'res://ic_popup_reminder',                             
+										at: notification_date_reminder
+								});
 							}
 						});
 						
 
-                           				
+                        /*   				
                             var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt);                       
                             var notification_title = 'Valider la prise de '+v_delivery.display_delivery_time; //Reminder
                             var notification_message = "C'est l'heure de prendre vos médicaments!";
@@ -628,11 +680,11 @@ app.treatments.processLocalNotification = function(data) {
                                     //repeat: 5, // 2 minutes
                                     //icon: 'file:///android_asset/www/img/flower128.png',                               
                                     at: notification_date
-                                });
+                            });
 								
-							// added notification rappel + 30 min(to cancel when click)	
+							// added notification reminder + 30 min(to cancel when click)	
 							var notification_id_reminder = '9' + v_delivery.delivery_day + v_delivery.delivery_time;
-							var notification_date_reminder = new Date(notification_date.getTime() + app_settings.reminder_second * 1000);                       
+							var notification_date_reminder = new Date(notification_date.getTime() + app_settings.reminder_seconds * 1000);                       
                            	console.log('notification REMINDER id='+notification_id_reminder + ' at=' + notification_date_reminder);
                             
 							cordova.plugins && cordova.plugins.notification.local.schedule({
@@ -646,8 +698,9 @@ app.treatments.processLocalNotification = function(data) {
 									icon: 'file://img/notification_reminder.png',
 								    smallIcon: 'res://ic_popup_reminder',                             
                                     at: notification_date_reminder
-                                });
-														
+                            });
+						*/
+						
                         //}
     
                      });           
