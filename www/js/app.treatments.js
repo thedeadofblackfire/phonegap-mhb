@@ -35,7 +35,7 @@ app.treatments.init = function() {
     dbAppUserTreatments.set(objUserTreatments);
 };
 
-// load 7 last days
+// load last days of treatments
 app.treatments.load = function(forceReboot) {
 	var forceReboot = forceReboot || false;    
 	
@@ -76,7 +76,7 @@ app.treatments.load = function(forceReboot) {
         },
         error: function(jqXHR, textStatus, errorThrown) {
 			mofLoading(false);  
-            alert('Error loading datas, try again!');
+            console.log('Error loading datas, try again!');
 			console.log(textStatus);
 			console.log(errorThrown);
         }
@@ -580,7 +580,7 @@ app.treatments.processLocalNotification = function(data) {
             if (v_day.status_today === app.treatments.constant.STATUS_TODAY_AFTER || v_day.status_today === app.treatments.constant.STATUS_TODAY) {
                 if (v_day.status === app.treatments.constant.STATUS_PENDING || v_day.status === app.treatments.constant.STATUS_INPROGRESS) {
                      $.each(v_day.children, function(k_delivery, v_delivery) { 
-                        console.log('delivery '+k_delivery+' | '+v_delivery.delivery_dt+ ' | '+v_delivery.status);
+                        console.log('delivery '+k_delivery+' status='+v_delivery.status);
                         
                         //if (v_delivery.status === app.treatments.constant.STATUS_PENDING) {
                    
@@ -588,6 +588,10 @@ app.treatments.processLocalNotification = function(data) {
 						
 						cordova.plugins.notification.local.isPresent(notification_id, function (present) {
 							console.log(present ? notification_id+" present" : notification_id+" not found");
+							if (!present) {
+								var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt); 
+								console.log('not present '+notification_date);
+							}
 						});
 						
 
@@ -601,7 +605,7 @@ app.treatments.processLocalNotification = function(data) {
                                 return true;
                             }
                         
-                            console.log('notification id='+notification_id + ' title=' + notification_title+' at='+notification_date);
+                            console.log('notification DELIVERY id='+notification_id + ' title=' + notification_title+' at='+notification_date);
                             
                             var url_sound = 'sounds/fr_alarm01.mp3';
                             if (objConfig.platform == 'Android') {
@@ -628,7 +632,7 @@ app.treatments.processLocalNotification = function(data) {
 								
 							// added notification rappel + 30 min(to cancel when click)	
 							var notification_id_reminder = '9' + v_delivery.delivery_day + v_delivery.delivery_time;
-							var notification_date_reminder = notification_date + app_settings.reminder_second;                       
+							var notification_date_reminder = new Date(notification_date.getTime() + app_settings.reminder_second * 1000);                       
                            	console.log('notification REMINDER id='+notification_id_reminder + ' at=' + notification_date_reminder);
                             
 							cordova.plugins && cordova.plugins.notification.local.schedule({
@@ -652,100 +656,6 @@ app.treatments.processLocalNotification = function(data) {
         });    
                           
         dbAppUserTreatments.set(objUserTreatments);         
-  
-        //_30_seconds_from_now = app.date.formatDateToTimestamp('2014-08-26 10:00:00');
-        //console.log(_30_seconds_from_now.getTime());
-         
-        /*
-        window.plugin.notification.local.add({
-            id:      1,
-            title:   'Reminder drug 0h',
-            message: 'Dont forget your drug',
-            //repeat:  'daily',
-            //sound:   '/www/res/raw/beep.mp3',
-            //sound: 'android.resource://' + app_settings.package_id + '/raw/beep',
-            sound:   'TYPE_ALARM',
-            //sound: 'TYPE_NOTIFICATION',
-            badge: 0,
-            json: {'message': 'alert'},
-            autoCancel: true,
-            //smallIcon: 'ic_dialog_email',
-            date:    _30_seconds_from_now
-        });
-
-        window.plugin.notification.local.onadd = function (id, state, json) {
-            alert('onadd '+id+' state='+state+' '+JSON.stringify(json));
-        };
-        
-        window.plugin.notification.local.ontrigger  = function (id, state, json) {
-            alert('ontrigger '+id+' state='+state+' '+JSON.stringify(json));
-        };
-        
-        window.plugin.notification.local.onclick   = function (id, state, json) {
-            alert('onclick  '+id+' state='+state+' '+JSON.stringify(json));
-        };
-        */
-    /*
-        var url_sound = 'sounds/fr_alarm01.mp3';
-    	if (device.platform == 'Android') {
-            url_sound = 'file:///android_asset/www/' + url_sound; //file:///android_asset/www/audio/aqua.mp3
-            console.log(url_sound);
-        }
-        url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
-    
-        window.plugin.notification.local.add({
-            id:      2,
-            title:   'Reminder sound 1',
-            message: 'Allo 1',
-            sound: url_sound,
-            //sound:  'android.resource://' + app_settings.package_id + '/raw/beep',
-            //sound: 'beep.wav',
-            //sound: 'https://office.eureka-platform.com/assets/media/en_alarm01.mp3',
-            //repeat:  'daily',
-            //sound:   '/www/res/raw/beep',
-           // sound:   '/www/sounds/fr_alarm01.mp3',
-            //sound: 'android.resource://' + app_settings.package_id + '/raw/beep',
-            //sound:   'TYPE_ALARM',
-            badge: 1,
-            autoCancel: true,
-            //repeat: 2, // 2 minutes
-            //icon: 'file:///android_asset/www/img/flower128.png',
-            led: 'FFFFFF',
-            date:    _60_seconds_from_now
-        });
-        
-          //  var resourceaudio = this.getPhoneGapPath() + 'beep.wav'; //'audio/audio.mp3';
-        //console.log(resourceaudio);
-        
-        
-        var _30_seconds_from_now = new Date(now + 30*1000);   
-        
-        window.plugin.notification.local.add({
-            id:      3,
-            title:   'Reminder sound 2',
-            message: 'Allo 2',
-            sound: url_sound,
-            //sound:   '/www/audio/beep.mp3',
-            //sound: 'https://office.eureka-platform.com/assets/media/en_taking02.mp3',
-            //sound: this.getPhoneGapPath() + 'res/raw/beep.mp3',
-            //repeat:  'daily',
-            //sound:   '/www/res/raw/beep',
-           // sound:   '/www/sounds/fr_alarm01.mp3',
-            //sound: 'android.resource://' + app_settings.package_id + '/raw/beep',
-            //sound:   'TYPE_NOTIFICATION',
-            badge: 1,
-            autoCancel: true,
-            led: 'A0FF05',
-            date:    _30_seconds_from_now
-        });
-       // window.plugin.notification.local.add({ message: 'Great app!' });
-       
-       */
-        /*     
-        window.plugin.notification.local.getScheduledIds( function (scheduledIds) {
-             alert('Scheduled IDs: ' + scheduledIds.join(' ,'));
-        });
-        */
         
 };
 

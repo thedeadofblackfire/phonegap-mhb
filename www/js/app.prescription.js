@@ -92,7 +92,7 @@ app.prescription.load = function(forceReboot) {
         },
         error: function(jqXHR, textStatus, errorThrown) {
 			//mofLoading(false);  
-            alert('Error loading datas, try again!');
+            console.log('Error loading datas, try again!');
 			console.log(textStatus);
 			console.log(errorThrown);
         }
