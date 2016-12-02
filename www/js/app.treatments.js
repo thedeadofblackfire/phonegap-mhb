@@ -851,7 +851,7 @@ app.treatments.displayPageTaking = function(page) {
 			
 		}
 			
-		if (html_detail == '') html_detail = i18n.t('treatments.notakingmedication');
+		if (html_detail == '') html_detail = '<center>'+i18n.t('treatments.notakingmedication')+'</center>';
 		else { 
 			html_detail = '<ul id="detail">'+html_detail+'</ul>';
 			html_button = '<button id="btnTakingValid" class="button button-raised xxxbutton-big xbutton-fill button-submit active"><i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète</button>';
