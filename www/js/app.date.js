@@ -115,7 +115,7 @@ app.date.getTodayTime = function() {
     return currentTodayTime;
 };
 
-// convert 20140526 to a prev next object string
+// convert 20140526 or 2016-12-02 08:00:00 to a prev next object string
 app.date.formatDateToObject = function(d) {
     var info = {};      
     var today = new Date();
@@ -126,7 +126,9 @@ app.date.formatDateToObject = function(d) {
                             
     info.str_time = '' + (hh[1]?hh:"0"+hh[0]) + (mm[1]?mm:"0"+mm[0]);
     
-    var current = new Date(parseInt(d.substr(0,4)), (parseInt(d.substr(4,2)) - 1), parseInt(d.substr(6,2)) );
+	var current = null;
+	if (d.length > 10) current = new Date(parseInt(d.substr(0,4)), (parseInt(d.substr(5,2)) - 1), parseInt(d.substr(8,2)), parseInt(d.substr(11,2)), parseInt(d.substr(14,2)), parseInt(d.substr(17,2)) );
+	else current = new Date(parseInt(d.substr(0,4)), (parseInt(d.substr(4,2)) - 1), parseInt(d.substr(6,2)) );
     info.current = current.getTime();
     info.str_current = d; 
     //var next = current;

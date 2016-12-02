@@ -31,7 +31,7 @@ app.treatments.init = function() {
     
     // @todo check on server if connected new production file or treatment to parse
     // if online, check if new treatment on server or wait a push notification ???
-    
+	    
     dbAppUserTreatments.set(objUserTreatments);
 };
 
@@ -42,7 +42,7 @@ app.treatments.load = function(forceReboot) {
     console.log('TREATMENTS - loadTreatment '+forceReboot);
    
     // show loading icon
-    mofLoading(true);
+    //mofLoading(true);
       
     if (forceReboot) current_treatment_page = 0;
 	
@@ -60,22 +60,19 @@ app.treatments.load = function(forceReboot) {
      
             //var str = generatePageArchive(res);
                
-            mofLoading(false); 
+            //mofLoading(false); 
 
             /*
                 $.each(res.items, function(k, v) { 
                     console.log(k+' | '+v.delivery_day);
                 });        
             */                
-                
-            // save local storage
-                
+                        
             app.treatments.processLocalNotification(res.items);
-            //mainView.loadContent(str);
-           
+                       
         },
         error: function(jqXHR, textStatus, errorThrown) {
-			mofLoading(false);  
+			//mofLoading(false);  
             console.log('Error loading datas, try again!');
 			console.log(textStatus);
 			console.log(errorThrown);
@@ -564,7 +561,6 @@ app.treatments.processLocalNotification = function(data) {
 		console.log('processLocalNotification');
    
         var now = new Date().getTime();
-        //_30_seconds_from_now = new Date(now + 30*1000);
         var _60_seconds_from_now = new Date(now + 60*1000);
 
         // status_today: before today (0), today (1), after today (2)
@@ -579,11 +575,9 @@ app.treatments.processLocalNotification = function(data) {
 			// create local notification with id=delivery_day+delivery_time (201611250800)		  
             if (v_day.status_today === app.treatments.constant.STATUS_TODAY_AFTER || v_day.status_today === app.treatments.constant.STATUS_TODAY) {
                 if (v_day.status === app.treatments.constant.STATUS_PENDING || v_day.status === app.treatments.constant.STATUS_INPROGRESS) {
-                     $.each(v_day.children, function(k_delivery, v_delivery) { 
+                    $.each(v_day.children, function(k_delivery, v_delivery) { 
                         console.log('delivery '+k_delivery+' status='+v_delivery.status);
-                        
-                        //if (v_delivery.status === app.treatments.constant.STATUS_PENDING) {
-                   
+                       
 						var notification_id = '' + v_delivery.delivery_day + v_delivery.delivery_time; //uniq, for android it must be convert to integer
 						
 						cordova.plugins.notification.local.isPresent(notification_id, function (present) {
@@ -644,66 +638,9 @@ app.treatments.processLocalNotification = function(data) {
 										at: notification_date_reminder
 								});
 							}
-						});
-						
-
-                        /*   				
-                            var notification_date = app.date.formatDateToTimestamp(v_delivery.delivery_dt);                       
-                            var notification_title = 'Valider la prise de '+v_delivery.display_delivery_time; //Reminder
-                            var notification_message = "C'est l'heure de prendre vos médicaments!";
-                   
-                            if (v_delivery.status === app.treatments.constant.STATUS_INPROGRESS && now > notification_date.getTime()) {
-                                console.log('Exclude '+notification_id + ' | ' + notification_title);
-                                return true;
-                            }
-                        
-                            console.log('notification DELIVERY id='+notification_id + ' title=' + notification_title+' at='+notification_date);
-                            
-                            var url_sound = 'sounds/fr_alarm01.mp3';
-                            if (objConfig.platform == 'Android') {
-                                url_sound = 'file:///android_asset/www/' + url_sound; //file:///android_asset/www/audio/aqua.mp3                               
-                            }
-                            //url_sound = 'android.resource://' + app_settings.package_id + '/raw/beep';
-							url_sound = 'file://audio/fr_alarm_exit.mp3';
-							
-                            cordova.plugins && cordova.plugins.notification.local.schedule({
-                                    id: notification_id,
-                                    title: notification_title,
-                                    text: notification_message,
-                                    sound: url_sound,
-                                    badge: 1,
-                                    data: {'message': 'delivery', 'delivery_dt': v_delivery.delivery_dt, 'reminder': false },                                 
-                                    ongoing: true,
-									//icon: 'res://icon',
-									icon: 'file://img/notification_delivery.png',
-								    smallIcon: 'res://ic_popup_reminder',
-                                    //repeat: 5, // 2 minutes
-                                    //icon: 'file:///android_asset/www/img/flower128.png',                               
-                                    at: notification_date
-                            });
-								
-							// added notification reminder + 30 min(to cancel when click)	
-							var notification_id_reminder = '9' + v_delivery.delivery_day + v_delivery.delivery_time;
-							var notification_date_reminder = new Date(notification_date.getTime() + app_settings.reminder_seconds * 1000);                       
-                           	console.log('notification REMINDER id='+notification_id_reminder + ' at=' + notification_date_reminder);
-                            
-							cordova.plugins && cordova.plugins.notification.local.schedule({
-                                    id: notification_id_reminder,
-                                    title: 'RAPPEL : Valider la prise de '+v_delivery.display_delivery_time,
-                                    text: notification_message,
-                                    sound: url_sound,
-                                    badge: 1,
-                                    data: {'message': 'reminder', 'delivery_dt': v_delivery.delivery_dt, 'reminder': true },                                   
-                                    ongoing: true,
-									icon: 'file://img/notification_reminder.png',
-								    smallIcon: 'res://ic_popup_reminder',                             
-                                    at: notification_date_reminder
-                            });
-						*/
-						
-                        //}
+						});											
     
-                     });           
+                    });           
                 }       
             }
         });    
@@ -723,19 +660,51 @@ app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
         var delivery_item = objUserTreatments[day].children[delivery_dt];
         console.log(delivery_item);
 
-		// @todo ecran de la prise ici
+		if (delivery_item) {	
+			// cancel le rappel si ce n'est pas le rappel with suffixe 9
+			if (!isReminder) {
+				var notification_reminder_id = '9' + delivery_item.delivery_day + delivery_item.delivery_time; 		
+				app.treatments.localNotificationCancel(notification_reminder_id);
+			}
+			
+			// @todo ecran de la prise ici
+			var html_detail = '';
+        
+			var currentTodayTime = app.date.getTodayTime();
+			console.log('currentTodayTime='+currentTodayTime);
+			// get today current time                      
+			var deliveryT = parseInt(delivery_item.delivery_time,10);  
+			
+			$.each(delivery_item.children, function(bag_key, bag_item) {                         
+							$.each(bag_item.children, function(drug_key, drug_item) {   
+								var mark;
+								if (delivery_item.status_today == app.treatments.constant.STATUS_TODAY_AFTER) mark = '<i class="icon ion-minus" style="color:#6DC4EF"></i>';
+								else if (drug_item.validate_taking == '1') mark = '<i class="icon ion-checkmark" style="color:#9FDDB3"></i>';
+								else if (delivery_item.status_today == app.treatments.constant.STATUS_TODAY_BEFORE && drug_item.validate_taking == '0') mark = '<i class="icon ion-close" style="color:#FC8A70"></i>';
+								else if (delivery_item.status_today == app.treatments.constant.STATUS_TODAY && drug_item.validate_taking == '0') {
+																											 
+									if (currentTodayTime < deliveryT) {
+										// is pending
+										mark = '<i class="icon ion-flag" style="color:#6DC4EF"></i>';
+									} else if (currentTodayTime > (deliveryT + 30)) {
+										// error
+										mark = '<i class="icon ion-close" style="color:#FC8A70"></i>';
+									} else if (currentTodayTime >= deliveryT) {
+										// in progress
+										mark = '&nbsp;<i class="icon ion-alert-circled" style="color:#FFA64C"></i>';
+									}                                                                                          
+								}                            
+														  
+								html_detail += mark+' '+drug_item.drug_name+'<br>';
+						  
+							});
+			});
+			html_detail += '';
 		
-		// cancel le rappel si ce n'est pas le rappel with suffixe 9
-		if (!isReminder) {
-			var notification_reminder_id = '9' + delivery_item.delivery_day + delivery_item.delivery_time; 		
-			app.treatments.localNotificationCancel(notification_reminder_id);
-		}
+			mainView.router.loadPage('frames/taking.html?delivery_dt='+delivery_dt+'&reminder='+isReminder+'&nocache=1');
+		}				
 		
-		
-		
-		
-		
-		
+		/*
         var html_detail = '';
         
         var currentTodayTime = app.date.getTodayTime();
@@ -768,19 +737,11 @@ app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
                         });
         });
         html_detail += '';
-                    
+                    			
         fw7.modal({
             title:  'Prise '+delivery_dt,
             text: i18n.t('treatments.notakingmedication')+'<br><small>'+html_detail+"</small>",
-            buttons: [
-            /*
-              {
-                text: 'RAPPEL',
-                onClick: function() {
-                  fw7.alert('You clicked first button!')
-                }
-              },
-              */
+            buttons: [        
               {
                 text: '<i class="icon icon-size24 ion-checkmark-round" style="color:green;"></i> PRENDRE',
                 onClick: function() {
@@ -795,13 +756,140 @@ app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
                 }
               },
             ]
-          });
+        });
+		*/
           
-         return true; 
+        return true; 
     } else {
         // no object, call the server to raise error ?
         return false;
     }
+};
+
+app.treatments.displayPageTaking = function(page) { 		
+        var delivery_dt = page.query.delivery_dt;
+        if (delivery_dt === undefined) {
+                d = new Date();
+                //delivery_dt = app.date.formatyyyymmdd(d); // a revoir ici detecter date du jour et prise à venir
+				delivery_dt = '2016-11-25 19:00:00';
+        }
+		var isReminder = page.query.reminder || false;  
+        console.log('query delivery_dt='+delivery_dt+' isReminder='+isReminder);
+             
+			 			 
+        info_date = app.date.formatDateToObject(delivery_dt);
+ 
+	    var day = delivery_dt.substr(0,10);
+		if (objUserTreatments[day]) {
+			var delivery_item = objUserTreatments[day].children[delivery_dt];
+			console.log(delivery_item);
+
+			if (delivery_item) {	
+				// cancel le rappel si ce n'est pas le rappel with suffixe 9
+				if (!isReminder) {
+					var notification_reminder_id = '9' + delivery_item.delivery_day + delivery_item.delivery_time; 		
+					app.treatments.localNotificationCancel(notification_reminder_id);
+				}
+								
+				var html_detail = '';			
+				var html_delivery_title = 'Je valide ma prise du '+delivery_dt;
+			
+				var currentTodayTime = app.date.getTodayTime();
+				console.log('currentTodayTime='+currentTodayTime);
+				// get today current time                      
+				var deliveryT = parseInt(delivery_item.delivery_time,10);  
+				
+				$.each(delivery_item.children, function(bag_key, bag_item) {                         
+								$.each(bag_item.children, function(drug_key, drug_item) {   
+									var mark;
+									if (delivery_item.status_today == app.treatments.constant.STATUS_TODAY_AFTER) mark = '<i class="icon ion-minus" style="color:#6DC4EF"></i>';
+									else if (drug_item.validate_taking == '1') mark = '<i class="icon ion-checkmark" style="color:#9FDDB3"></i>';
+									else if (delivery_item.status_today == app.treatments.constant.STATUS_TODAY_BEFORE && drug_item.validate_taking == '0') mark = '<i class="icon ion-close" style="color:#FC8A70"></i>';
+									else if (delivery_item.status_today == app.treatments.constant.STATUS_TODAY && drug_item.validate_taking == '0') {
+																												 
+										if (currentTodayTime < deliveryT) {
+											// is pending
+											mark = '<i class="icon ion-flag" style="color:#6DC4EF"></i>';
+										} else if (currentTodayTime > (deliveryT + 30)) {
+											// error
+											mark = '<i class="icon ion-close" style="color:#FC8A70"></i>';
+										} else if (currentTodayTime >= deliveryT) {
+											// in progress
+											mark = '&nbsp;<i class="icon ion-alert-circled" style="color:#FFA64C"></i>';
+										}                                                                                          
+									}                            
+															  
+									//html_detail += mark+' '+drug_item.drug_name+'<br>';
+									
+									html_detail += '<li>';
+									html_detail += '<label class="label-checkbox item-content">';
+									html_detail += '<input type="checkbox" name="drug-check-'+drug_item.drug_code+'" class="drug-checkbox" value="1" data-drug="'+drug_item.drug_code+'" checked="checked">';
+									html_detail += '<div class="item-media">'+app.treatments.displayGaleniqIcon(drug_item.drug_forme)+'</div>';
+									html_detail += '<div class="item-inner">';
+									html_detail += '<div class="item-title-row">';
+									html_detail += '<div class="item-title">'+drug_item.drug_name+'</div>';									
+									html_detail += '<div class="item-after">Quantité: '+drug_item.drug_quantity+'</div>';	
+									html_detail += '</div>';	
+									html_detail += '</div>';	
+									html_detail += '<div class="item-after"><i class="icon-form-checkbox"></i></div>';
+									html_detail += '</label>';
+									html_detail += '</li>';
+									
+							  
+								});
+				});
+				html_detail += '';
+										   
+			}				
+			  
+			
+		} else {
+			// no object found, nothing to taking
+			
+		}
+			
+		if (html_detail == '') html_detail = i18n.t('treatments.notakingmedication');
+		else html_detail = '<ul id="detail">'+html_detail+'</ul>';
+		
+		//$('.detail').html(html_detail); 
+			 		
+			 
+        // show loading icon
+        //mofLoading(true);
+        
+        var data = {};   
+		data.html_detail = html_detail;
+		data.html_delivery_title = html_delivery_title;
+        data.info_date = info_date;
+        //data.width = app.treatments.calculeWidth();
+        //data.pill = app.treatments.renderPill(data.width);
+		
+        //$('body').i18n();
+      
+        // And insert generated list to page content
+        var content = $$(page.container).find('.page-content').html();       
+        content = fwk.render(content, data, false);      
+        $$(page.container).find('.page-content').html(content);
+        
+        var navcontent = $$(page.navbarInnerContainer).html();          
+        navcontent = fwk.render(navcontent, data, false);      
+        //alert(navcontent);
+        $$(page.navbarInnerContainer).html(navcontent);
+  
+        //$(window).resize( app.treatments.respondPill );
+
+
+                
+              $('.current_date').html(info_date.label_current+'<br>'+info_date.label_current_day);
+              //$('.current_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_today+'&nocache=1');
+              $('.current_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_today+'\')');
+              
+              //$('.prev_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_prev+'&nocache=1');
+              // $('.next_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_next+'&nocache=1');
+              $('.prev_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_prev+'\')');
+               $('.next_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_next+'\')');
+ 
+        return true;
 };
     
 app.treatments.calculeWidth = function() {
@@ -950,4 +1038,39 @@ app.treatments.deliverySuccess = function(d) {
 app.treatments.deliveryFail = function(d) {
 	console.log('app.treatments.deliveryFail');
 	console.log(d);
+};
+
+
+// Get galeniq icon (FR only)
+app.treatments.displayGaleniqIcon = function(galeniq) {
+	//console.log(galeniq);
+	//galeniq = 'Solution nasale';
+	var str = '';
+	if (galeniq) {
+		if (galeniq.search(/comprimé effervescent/i) > -1) str = 'effervescent';
+		else if (galeniq.search(/comprimé/i) > -1) str = 'comprimes';
+		else if (galeniq.search(/capsule/i) > -1) str = 'capsule'; 
+		else if (galeniq.search(/ampoule/i) > -1) str = 'ampoule'; 
+		else if (galeniq.search(/crème/i) > -1) str = 'creme';
+		else if (galeniq.search(/gélule/i) > -1 || galeniq.search(/pilule/i) > -1) str = 'gelule';
+		else if (galeniq.search(/granulé/i) > -1) str = 'granules';
+		else if (galeniq.search(/pastille/i) > -1 || galeniq.search(/tablette/i) > -1) str = 'pastilles';
+		else if (galeniq.search(/ovule/i) > -1) str = 'ovule';			
+		else if (galeniq.search(/pommade/i) > -1) str = 'pommade';		
+		else if (galeniq.search(/poudre/i) > -1) str = 'sachet';
+		else if (galeniq.search(/sirop/i) > -1) str = 'sirop';
+		else if (galeniq.search(/solution injectable/i) > -1 || galeniq.search(/perfusion/i) > -1) str = 'injection';	
+		else if (galeniq.search(/solution buvable/i) > -1) str = 'solutionbuvable';			
+		else if (galeniq.search(/gouttes/i) > -1) str = 'gouttes';
+		else if (galeniq.search(/buccal/i) > -1) str = 'spraybuccal';
+		else if (galeniq.search(/solution nasale/i) > -1) str = 'spraynasal';
+		else if (galeniq.search(/suppositoire/i) > -1) str = 'suppositoire';			
+		else str = 'comprimes';
+	} else {
+		galeniq = 'Forme inconnue';
+		str = 'unknown';
+	}
+							
+	if (str != '') str = '<img src="img/forme/forme_'+str+'.png" width="48" alt="'+galeniq+'" title="'+galeniq+'" >';
+	return str;
 };

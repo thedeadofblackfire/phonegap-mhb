@@ -178,7 +178,11 @@ function initAfterLogin() {
   $('body').i18n();
   
   // get last prescriptions list
-  if (Object.keys(objUser).length > 0) app.prescription.load();
+  if (Object.keys(objUser).length > 0) {
+	  app.treatments.load();
+	  
+	  app.prescription.load();
+  }
         
 }
 
@@ -378,7 +382,7 @@ function initFramework() {
 
         if (page.name === 'taking') {                  
        
-             app.treatments.displayPageTreatment(page);
+             app.treatments.displayPageTaking(page);
  
         }
 
