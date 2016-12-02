@@ -778,7 +778,10 @@ app.treatments.displayPageTaking = function(page) {
              
 			 			 
         info_date = app.date.formatDateToObject(delivery_dt);
- 
+		var html_detail = '';			
+		var html_delivery_title = info_date.label_current_taking;
+		var html_button = '';
+				
 	    var day = delivery_dt.substr(0,10);
 		if (objUserTreatments[day]) {
 			var delivery_item = objUserTreatments[day].children[delivery_dt];
@@ -790,10 +793,7 @@ app.treatments.displayPageTaking = function(page) {
 					var notification_reminder_id = '9' + delivery_item.delivery_day + delivery_item.delivery_time; 		
 					app.treatments.localNotificationCancel(notification_reminder_id);
 				}
-								
-				var html_detail = '';			
-				var html_delivery_title = info_date.label_current_taking;
-			
+											
 				var currentTodayTime = app.date.getTodayTime();
 				console.log('currentTodayTime='+currentTodayTime);
 				// get today current time                      
@@ -841,8 +841,7 @@ app.treatments.displayPageTaking = function(page) {
 									
 							  
 								});
-				});
-				html_detail += '';
+				});				
 										   
 			}				
 			  
@@ -853,17 +852,20 @@ app.treatments.displayPageTaking = function(page) {
 		}
 			
 		if (html_detail == '') html_detail = i18n.t('treatments.notakingmedication');
-		else html_detail = '<ul id="detail">'+html_detail+'</ul>';
+		else { 
+			html_detail = '<ul id="detail">'+html_detail+'</ul>';
+			html_button = '<button id="btnTakingValid" class="button button-raised xxxbutton-big xbutton-fill button-submit active"><i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète</button>';
+        
+		}
 		
 		//$('.detail').html(html_detail); 
-			 		
-		// @todo if network, send info to myEureka
-			 
+		 
 
         var data = {};   
 		data.html_detail = html_detail;
 		data.html_delivery_title = html_delivery_title;
         data.info_date = info_date;
+		data.button_valid = html_button;
         //data.width = app.treatments.calculeWidth();
         //data.pill = app.treatments.renderPill(data.width);
 		
