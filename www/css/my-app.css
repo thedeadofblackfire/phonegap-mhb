@@ -370,6 +370,14 @@ i.mhb-traitement{
   background:url(../img/svg/ordo-traitement.svg) no-repeat ;
 }
 
+.vertical-align-middle { 
+    vertical-align: middle; 
+}
+
+.padding-bottom-3 {
+    padding-bottom: 3px;
+}
+
 
 .navbar-tool{
   margin-bottom: 0px !important;

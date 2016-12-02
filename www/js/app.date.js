@@ -175,6 +175,8 @@ app.date.formatDateToObject = function(d) {
     if (baseLanguage === 'fr') {        
         info.label_current = (dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNamesShort[current.getMonth()];       
         info.label_current_full = app.date.calendarTranslate.dayNamesShort[current.getDay()] + ' ' + info.label_current;
+		info.label_current_taking = app.date.calendarTranslate.dayNames[current.getDay()] + ' ' + (dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNames[current.getMonth()];
+		if (d.length > 10) info.label_current_taking += ' '+d.substr(11,2)+':'+d.substr(14,2);
         info.label_next_full = app.date.calendarTranslate.dayNamesShort[next.getDay()] + ' ' + (next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]) + ' ' + app.date.calendarTranslate.monthNamesShort[next.getMonth()];
         info.label_prev_full = app.date.calendarTranslate.dayNamesShort[prev.getDay()] + ' ' + (prev.getDate().toString()[1]?prev.getDate().toString():"0"+prev.getDate().toString()[0]) + ' ' + app.date.calendarTranslate.monthNamesShort[prev.getMonth()];
        // info.label_next_day = (dd[1]?dd:"0"+dd[0])+' '+app.date.calendarTranslate.monthNamesShort[next.getMonth()];

@@ -515,10 +515,9 @@ app.treatments.localNotificationInit = function() {
 		
         // need to have the objUser preloaded
 		if (customData && customData.delivery_dt) {	
-			app.treatments.createPopupDelivery(customData.delivery_dt, customData.reminder);
-		}
-		
-		// @todo if network, send info to myEureka
+			//app.treatments.createPopupDelivery(customData.delivery_dt, customData.reminder);
+			mainView.router.loadPage('frames/taking.html?delivery_dt='+customData.delivery_dt+'&reminder='+customData.reminder+'&nocache=1');
+		}				
 		
 	});
 
@@ -649,6 +648,7 @@ app.treatments.processLocalNotification = function(data) {
         
 };
 
+// OBSOLETE
 // taking dialog: app.treatments.createPopupDelivery('2014-10-06 10:00:00');
 // isReminder: check if reminder notification after 30min	
 app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
@@ -792,7 +792,7 @@ app.treatments.displayPageTaking = function(page) {
 				}
 								
 				var html_detail = '';			
-				var html_delivery_title = 'Je valide ma prise du '+delivery_dt;
+				var html_delivery_title = info_date.label_current_taking;
 			
 				var currentTodayTime = app.date.getTodayTime();
 				console.log('currentTodayTime='+currentTodayTime);
@@ -821,17 +821,21 @@ app.treatments.displayPageTaking = function(page) {
 															  
 									//html_detail += mark+' '+drug_item.drug_name+'<br>';
 									
+									var drug_option = '';
+									if (drug_item.drug_ifneeded == '1') drug_option += '&nbsp;&nbsp;&nbsp;Si besoin';
+									if (drug_item.drug_inbag == '0') drug_option += '&nbsp;&nbsp;&nbsp;Hors Pillulier';
+									
 									html_detail += '<li>';
-									html_detail += '<label class="label-checkbox item-content">';
+									html_detail += '<label class="label-checkbox item-content" style="padding-left:0px;">';
 									html_detail += '<input type="checkbox" name="drug-check-'+drug_item.drug_code+'" class="drug-checkbox" value="1" data-drug="'+drug_item.drug_code+'" checked="checked">';
-									html_detail += '<div class="item-media">'+app.treatments.displayGaleniqIcon(drug_item.drug_forme)+'</div>';
-									html_detail += '<div class="item-inner">';
-									html_detail += '<div class="item-title-row">';
-									html_detail += '<div class="item-title">'+drug_item.drug_name+'</div>';									
-									html_detail += '<div class="item-after">Quantité: '+drug_item.drug_quantity+'</div>';	
+									html_detail += '<div class="item-media" style="margin:0px;padding:0px;">'+app.treatments.displayGaleniqIcon(drug_item.drug_forme)+'</div>';
+									html_detail += '<div class="item-inner" style="margin:0px;padding:0px;xbackground:yellow;width:95%;">';
+									html_detail += '<div class="item-title-row" style="position:relative;">';
+									html_detail += '<div class="item-title" style="width:100%;font-size:14px;">'+drug_item.drug_name+'</div>';									
+									html_detail += '<div class="item-text">Quantité: '+drug_item.drug_quantity+drug_option+'</div>';	
 									html_detail += '</div>';	
 									html_detail += '</div>';	
-									html_detail += '<div class="item-after"><i class="icon-form-checkbox"></i></div>';
+									html_detail += '<div class="item-after" style="padding-right:0px;"><i class="icon icon-form-checkbox"></i></div>';
 									html_detail += '</label>';
 									html_detail += '</li>';
 									
@@ -853,10 +857,9 @@ app.treatments.displayPageTaking = function(page) {
 		
 		//$('.detail').html(html_detail); 
 			 		
+		// @todo if network, send info to myEureka
 			 
-        // show loading icon
-        //mofLoading(true);
-        
+
         var data = {};   
 		data.html_detail = html_detail;
 		data.html_delivery_title = html_delivery_title;
@@ -873,22 +876,70 @@ app.treatments.displayPageTaking = function(page) {
         
         var navcontent = $$(page.navbarInnerContainer).html();          
         navcontent = fwk.render(navcontent, data, false);      
-        //alert(navcontent);
         $$(page.navbarInnerContainer).html(navcontent);
   
-        //$(window).resize( app.treatments.respondPill );
+		$$('#btnTakingValid').removeAttr('disabled');
 
-
+		$$('.drug-checkbox').on("change", function(e) {
+			console.log($$(this).attr('name')+' '+$$(this).prop('checked'));
+			
+			// check if all drugs are checked
+			var totalDrugs = 0;
+			var totalDrugsChecked = 0;
+			$('.drug-checkbox').each(function () {
+				totalDrugs++;
+				if (this.checked) totalDrugsChecked++;
+			});
+			
+			if (totalDrugs == totalDrugsChecked) $$('#btnTakingValid').html('<i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète');
+			else $$('#btnTakingValid').html('<i class="material-icons vertical-align-middle padding-bottom-3">clear</i> Valider prise incomplète');
+		});
+		
+		$$('#btnTakingValid').on("click", function() {
+            //  app.resetLocalStorage();
+			console.log('valid');
+			  
+			var sList = "";
+			//$('input[type=checkbox]')
+			$('.drug-checkbox').each(function () {
+				console.log($$(this).attr('name'));
+				var current_drug_code = $$(this).attr('data-drug');
+				var sThisVal = (this.checked ? "1" : "0");
+				sList += (sList=="" ? current_drug_code+'='+sThisVal : "," + current_drug_code+'='+sThisVal);
+			});
+			console.log(sList);
+			
+			// flag drug status prise
+			$$('#btnTakingValid').html('<i class="material-icons vertical-align-middle padding-bottom-3">cached</i> action en cours');
+			$$('#btnTakingValid').attr('disabled', 'disabled');
+			
+			// ajax call
+			//https://vendor.eureka-platform.com/api/mobile/settreatmentevent
+			$.ajax({
+				url: app_settings.api_url+"/settreatmentevent",
+				datatype: 'json',      
+				type: "post",
+				data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, device_serial: window.localStorage["device_serial"], delivery_dt: delivery_dt, drugs: sList, reminder: isReminder},   
+				success:function(res){                    
+					console.log(res);
+			 	 
+					// @todo flag drug status prise to not display again
+				 
+				   	// go back home
+					mainView.router.loadPage('index.html?nocache=1');
+			  
+				},
+				error: function(jqXHR, textStatus, errorThrown) {				
+					console.log('Error loading datas, try again!');
+					console.log(textStatus);
+					console.log(errorThrown);
+				}
+			});
+		
+			  
+        });
                 
-              $('.current_date').html(info_date.label_current+'<br>'+info_date.label_current_day);
-              //$('.current_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_today+'&nocache=1');
-              $('.current_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_today+'\')');
-              
-              //$('.prev_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_prev+'&nocache=1');
-              // $('.next_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_next+'&nocache=1');
-              $('.prev_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_prev+'\')');
-               $('.next_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_next+'\')');
- 
+
         return true;
 };
     

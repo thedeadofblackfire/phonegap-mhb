@@ -74,7 +74,10 @@ var app = {
 				var result = app.auth.checkPreAuth(false); 
                 if (!result) return;
             } 
-            
+			
+			// set a device serial
+			window.localStorage["device_serial"] = 'ECS1408100003';
+      
             initAfterLogin();			
         }
 		        
@@ -390,27 +393,14 @@ function initFramework() {
        
              app.treatments.displayPageDailyTreatment(page);
  
-        }
-        
+        }        
         
         if (page.name === 'treatments_report') {                  
        
              app.treatments.displayPageTreatmentReport(page);
  
         }
-  
-               
-        if (page.name === 'messages') {        
-             $$('.demo-remove-callback').on('deleted', function () {
-                fw7.alert('Thanks, item removed!', 'eBox Smart');
-            });
-
-            console.log('message to load');
-        
-            $$('.ks-send-message').on('click', function () {
-                $$('.ks-messages-form').trigger('submit');
-            });
-        }
+                  
         
         if (page.name === 'settings') {        
             $$('.reset-local-storage').on("click", function() {

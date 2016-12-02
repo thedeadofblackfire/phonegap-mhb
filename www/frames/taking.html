@@ -2,7 +2,7 @@
 
 <!--  Pages Content DRUGS LIST -->
 <div class="pages">
-  <div  class="page navbar-fixed"   data-page="taking">
+  <div  class="page navbar-fixed" data-page="taking">
    <div class="navbar hello " >
       <div class="navbar-inner">
          <div class="left">
@@ -20,29 +20,15 @@
    </div>
  <div class="page-content">
   
- 
-    <div class="content-block-title html_delivery_title">{html_delivery_title}</div>
-      <div class="list-block">
+	<div class="content-block-title" style="text-align:center">
+		<h2>Je valide ma prise</h2>
+		<h4>{html_delivery_title}</h4>
+	</div>
+    
+      <div class="list-block xxxmedia-list">
 	  
-         <form id="myform" class="list-block store-data">
+         <form id="takingForm" class="list-block xxxstore-data">
 			{html_detail}
-			<!--
-            <ul>
-               <li>
-                  <label class="label-checkbox item-content">
-                     <input type="checkbox" name="ks-media-checkbox" value="1" checked="checked">            
-                     <div class="item-media"><i class="mhx-drugs-cachet"></i></div>
-                     <div class="item-inner">
-                        <div class="item-title-row">
-                           <div class="item-title">DOLIPRANE</div>
-                           <div class="item-after"> 500mg  </div>
-                        </div>
-                     </div>
-                     <div class="item-after"><i class="icon-form-checkbox"></i></div>
-                  </label>
-               </li>                           
-            </ul>
-			-->
 			
             <!-- <div class="content-block">
                <p class="buttons-row">
@@ -52,7 +38,7 @@
                </div> -->           
          </form>
          <div class="content-block">
-               <p><a href="#" id="btnValider" class="button button-raised xxxbutton-big button-fill button-submit active">Valider</a></p>
+               <p class="buttons-row"><center><button id="btnTakingValid" class="button button-raised xxxbutton-big xbutton-fill button-submit active"><i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète</button></center></p>
          </div>
       </div>
    </div>
