@@ -370,10 +370,26 @@ function initFramework() {
         }
                
 
-        if (page.name === 'profile') {
-            console.log('this is profile');
-            //console.log('login.html pageinit'); 
-            mainView.loadPage('frames/profile.html');       
+        if (page.name === 'profile') {       
+            //mainView.loadPage('frames/profile.html');       
+			/*				
+			var data = {};   
+			data.objUser = objUser;
+
+			var content = $$(page.container).find('.page-content').html();       
+			content = fwk.render(content, data, false);      
+			$$(page.container).find('.page-content').html(content);
+			
+			var navcontent = $$(page.navbarInnerContainer).html();          
+			navcontent = fwk.render(navcontent, data, false);      
+			$$(page.navbarInnerContainer).html(navcontent);
+			*/
+			
+			if (objUser.lastname) $$('#lastname').val(objUser.lastname);
+			if (objUser.firstname) $$('#firstname').val(objUser.firstname);			
+			if (objUser.email) $$('#email').val(objUser.email);
+			if (objUser.dob) $$('#dob').val(objUser.dob);
+			if (objUser.gender) $$('#gender').val(objUser.gender);
         }
 		
 		if (page.name === 'network') {
@@ -394,7 +410,7 @@ function initFramework() {
 			
 			var navcontent = $$(page.navbarInnerContainer).html();          
 			navcontent = fwk.render(navcontent, data, false);      
-			$$(page.navbarInnerContainer).html(navcontent);
+			$$(page.navbarInnerContainer).html(navcontent);			
 			
 		}
       

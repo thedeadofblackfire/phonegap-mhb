@@ -8,7 +8,7 @@
             <!--<a href="#" class="back link no-animation"><i class="icon icon-back"></i></a>-->
 			<a href="index.html?nocache=1" class="link no-animation"><i class="icon icon-back"></i></a>	
           </div>
-          <div class="center sliding" style="padding-left:10%;"><a href="index.html?nocache=1" class="link no-animation">Mon profile</a></div>		  
+          <div class="center sliding" style="padding-left:10%;"><a href="index.html?nocache=1" class="link no-animation">Mon compte</a></div>		  
           <div class="right">
            &nbsp;   
           </div> 		
@@ -36,7 +36,18 @@
            <div class="item-media"><i class="icon icon-form-name"></i></div>
             <div class="item-title label">Nom</div>
             <div class="item-input">
-             <input type="text" name="name" placeholder="Enter your name" value="">
+             <input type="text" id="lastname" name="lastname" placeholder="Votre nom" value="">
+           </div>
+         </div>
+       </div>
+     </li>
+	 <li>
+          <div class="item-content">
+           <div class="item-inner">
+           <div class="item-media"><i class="icon icon-form-name"></i></div>
+            <div class="item-title label">Prénom</div>
+            <div class="item-input">
+             <input type="text" id="firstname" name="firstname" placeholder="Votre prénom" value="">
            </div>
          </div>
        </div>
@@ -47,7 +58,7 @@
        <div class="item-media"><i class="icon icon-form-email"></i></div>
         <div class="item-title label">E-mail</div>
         <div class="item-input">
-         <input type="email" name="email" placeholder="Enter your e-mail" value="">
+         <input type="email" id="email" name="email" placeholder="Votre e-mail" value="">
        </div>
      </div>
    </div>
@@ -56,30 +67,44 @@
   <div class="item-content">
    <div class="item-inner">
    <div class="item-media"><i class="icon icon-form-gender"></i></div>
-    <div class="item-title label">Gender</div>
+    <div class="item-title label">Sexe</div>
     <div class="item-input">
-     <select name="gender">
-      <option value="male" >Homme</option>
-      <option value="female">Femme</option>
+     <select id="gender" name="gender">
+      <option value="M">Homme</option>
+      <option value="F">Femme</option>
     </select>
   </div>
 </div>
 </div>
 </li>
+
 <li>
 <div class="item-content">
  <div class="item-media"><i class="icon icon-form-calendar"></i></div>
+  <div class="item-title label">Naissance</div>
  <div class="item-inner">
   <div class="item-input">
-   <input type="date" placeholder="Birth day" value="2014-04-30">
+   <input type="date" id="dob" name="dob" placeholder="Date de naissance" value="">
  </div>
 </div>
 </div>
 </li>
-
-
+<!--
+   <li>
+      <div class="item-content">
+       <div class="item-inner">
+       <div class="item-media"><i class="icon icon-form-email"></i></div>
+        <div class="item-title label">N° de sécurité sociale</div>
+        <div class="item-input">
+         <input type="text" name="health_social_security" placeholder="Numéro de sécurité sociale" value="{objUser.patient_info.health_social_security}">
+       </div>
+     </div>
+   </div>
+ </li>
+ -->
 </ul>
 
+<!--
 <div class="list-block">
                <ul>  
                   <li>
@@ -98,6 +123,7 @@
                   
                 </ul>
               </div> 
+			  -->
 			  
 </form>
 <div class="content-block">
@@ -106,7 +132,7 @@
               <div class="item-inner">
                 <div class="item-title" data-i18n="label.signout">label.signout</div>
               </div>
-</a>
+	</a>
  </p>
 </div>
 
@@ -117,23 +143,21 @@
   </div>
 </div>
 
-
+<!--
     <div class="toolbar toolbar-bottom">
       <div class="toolbar-inner">
         <div class="ks-demo-icon  navbar-tool">
-          <a href="frames/taking.html?nocache=1" class="link"><div class="icon "><i class="material-icons md-36">assignment</i></div> <!-- <div class="icon-name">Prise</div> --> </a>
-        </div>
-        <!--  <a href="#tab-1" class="link"><div class="icon"><i class="material-icons">local_pharmacy</i></div><div class="icon-name">Prise</div></a> -->
+          <a href="frames/taking.html?nocache=1" class="link"><div class="icon "><i class="material-icons md-36">assignment</i></div></a>
+        </div>     
         <div class="ks-demo-icon  navbar-tool">
-          <a href="frames/profile.html?nocache=1" class="link"><div class="icon navbar-tool"><i class="material-icons md-36">person</i></div><!-- <div class="icon-name">Profile</div> --> </a>
+          <a href="frames/profile.html?nocache=1" class="link"><div class="icon navbar-tool"><i class="material-icons md-36">person</i></div><</a>
         </div>
         <div class="ks-demo-icon  navbar-tool">
-          <a href="frames/contact.html?nocache=1" class="link"><div class="icon navbar-tool"><i class="material-icons md-36">contact_phone</i></div><!-- <div class="icon-name">Contact</div> --></a> 
+          <a href="frames/contact.html?nocache=1" class="link"><div class="icon navbar-tool"><i class="material-icons md-36">contact_phone</i></div></a> 
         </div>
-
-      </div>
-      <!-- </div> -->
+      </div>     
     </div>
+	-->
 
   </div>
   <!--</div> -->
