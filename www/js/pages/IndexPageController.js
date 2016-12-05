@@ -13,7 +13,7 @@ app.pages.IndexPageController = function (app, $$) {
   (function () {
     var options = {
 	  'open': false,
-	  'closeButtonText': 'Quitter',
+	  'closeButtonText': 'Fermer',
       'bgcolor': '#00A77F',
 		//	  '#0da6ec',
       'fontcolor': '#fff',
@@ -37,8 +37,8 @@ app.pages.IndexPageController = function (app, $$) {
       },
       {
         id: 'slide2',
-		picture: '<div class="tutorialicon">✲</div>',
-        text: 'Prend en charge toute une variété de dispositifs connectés, de sorte que vous pouvez suivre toutes vos fonctions vitales partout et à tout moment.'
+		picture: '<div class="tutorialicon"><img src="img/focus.svg" width="256" height="256"><!--✲--></div>',
+        text: 'Vous pouvez prendre en photo votre ordonnance pour que votre pharmacien puisse préparer vos médicaments et vous informe quand vos pilluliers sont disponibles en pharmacie.'
       },
       {
         id: 'slide3',
