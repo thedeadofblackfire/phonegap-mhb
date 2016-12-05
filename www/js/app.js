@@ -138,17 +138,23 @@ var app = {
         }
                         
         
-        // document.addEventListener("offline", this.onOffline, false);
-        // document.addEventListener("online", this.onOnline, false);
+        document.addEventListener("offline", this.onOffline, false);
+        document.addEventListener("online", this.onOnline, false);
         
         // save device info the first time for mobile's ower (device uuid)
         // http://docs.phonegap.com/en/3.2.0/cordova_device_device.md.html#Device
     },
     onOffline: function() {
         // Handle the offline event
+		console.log('listen offline');
     },
     onOnline: function() {
         // Handle the online event
+		console.log('listen online');
+		
+		app.treatments.load();
+	  
+		app.prescription.load();
     },
 	checkConnection: function() {
 		var networkState = navigator.connection.type;

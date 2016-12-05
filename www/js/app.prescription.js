@@ -59,6 +59,8 @@ app.prescription.load = function(forceReboot) {
      
 			if (res.items) app.prescription.displayPrescriptions(res.items)
 				          
+			init_prescription_called = false;
+			
             //mofLoading(false);          
         },
         error: function(jqXHR, textStatus, errorThrown) {
