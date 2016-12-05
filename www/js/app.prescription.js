@@ -15,6 +15,13 @@ var objUserPrescriptions = {};
 
 app.prescription = {};
 
+app.prescription.constant = {};
+app.prescription.constant.STATUS_RECEIPT_ATTACHMENT     = app.prescription.constant.STATUS_RECEIPT_ATTACHMENT   || 0;
+app.prescription.constant.STATUS_PENDING                = app.prescription.constant.STATUS_PENDING              || 1;
+app.prescription.constant.STATUS_LIVE              		= app.prescription.constant.STATUS_LIVE            		|| 2;
+app.prescription.constant.STATUS_DELIVERY_READY         = app.prescription.constant.STATUS_DELIVERY_READY       || 10;
+
+
 app.prescription.init = function() {
 	console.log('PRESCRIPTION - init');
 	
@@ -62,7 +69,13 @@ app.prescription.load = function(forceReboot) {
 						var title = '';
 						title = 'Ordonnance du '+v.prescription_date;
 						var description = '';
-						description = v.status;
+						
+						if (v.status == app.prescription.constant.STATUS_RECEIPT_ATTACHMENT)  description += 'Ordonnance scannée'; 
+						else if (v.status == app.prescription.constant.STATUS_PENDING) description += 'En cours de préparation';
+						else if (v.status == app.prescription.constant.STATUS_LIVE) description += 'Ordonnance validée';
+						else if (v.status == app.prescription.constant.STATUS_DELIVERY_READY) description += 'Commande disponible en pharmacie';
+						
+						
 						var doctor = '';
 						if (v.prescription_doctor) doctor = v.prescription_doctor;
 						else doctor = 'Prescripteur non renseigné';
@@ -122,6 +135,8 @@ app.prescription.win = function(r) {
 	
 	var prescriptionFrame = document.getElementById('prescriptionFrame');
     prescriptionFrame.src = 'img/focus.svg';
+	
+	// @todo redirection to prescription list
 	
 	console.log('upload done');
 }

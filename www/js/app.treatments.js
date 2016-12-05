@@ -115,47 +115,12 @@ app.treatments.displayPageHome = function(page)
 		//'Aucun traitement à prendre';					
 		$('#observance_home_description').html('<p style="text-align:center;">'+description+'</p>');  
 
+		// @todo calculate next delivery
 				
 				
-		$('#menu_alert').addClass('menu-alert-focus');
+		//$('#menu_alert').addClass('menu-alert-focus'); // icon focus in red color
 		
 		return true;
-        // show loading icon
-        //mofLoading(true);
-        
-        var data = {};        
-        data.info_date = info_date;
-        data.width = app.treatments.calculeWidth();
-        data.pill = app.treatments.renderPill(data.width);
-        //$('body').i18n();
-        //data.url_edit = 'frames/edit.html?address='+app.convertAddressToId(address)+'&nocache=1&rand='+new Date().getTime();
-
-        // And insert generated list to page content
-        var content = $$(page.container).find('.page-content').html();       
-        content = fwk.render(content, data, false);      
-        $$(page.container).find('.page-content').html(content);
-        
-        var navcontent = $$(page.navbarInnerContainer).html();          
-        navcontent = fwk.render(navcontent, data, false);      
-        //alert(navcontent);
-        $$(page.navbarInnerContainer).html(navcontent);
-  
-                // Adjust canvas size when browser resizes
-                $(window).resize( app.treatments.respondPill );
-
-
-                
-              $('.current_date').html(info_date.label_current+'<br>'+info_date.label_current_day);
-              //$('.current_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_today+'&nocache=1');
-              $('.current_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_today+'\')');
-              
-              //$('.prev_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_prev+'&nocache=1');
-              // $('.next_date').attr('href', 'frames/ebox_treatments.html?delivery='+info_date.str_next+'&nocache=1');
-              $('.prev_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_prev+'\')');
-               $('.next_date').attr('onclick', 'app.treatments.navigatePageTreatment(\''+info_date.str_next+'\')');
-
- 
-        return true;
 };
 
 app.treatments.displayPageTreatment = function(page)
@@ -224,6 +189,7 @@ app.treatments.displayPageTreatment = function(page)
         return true;
 };
   
+// not used, for next release
 app.treatments.displayPageTreatmentReport = function(page) {        
         var delivery = page.query.delivery;
         if (delivery === undefined) {
@@ -361,6 +327,7 @@ app.treatments.stats = {
     currentPercent: 100,
 };
 
+// not used, for next release
 app.treatments.updateReportPercent = function() {
     var percent = (app.treatments.stats.totalSuccess / (app.treatments.stats.totalSuccess + app.treatments.stats.totalError)) * 100;
     percent = percent.toFixed(2);
@@ -369,6 +336,7 @@ app.treatments.updateReportPercent = function() {
     $('.percent').html(percent+'%, '+app.treatments.stats.totalDays+' '+str_day);               
 };
 
+// not used, for next release
 app.treatments.displayReportItems = function(items) {
         console.log('displayReportItems ' + Object.keys(items).length);               
         
