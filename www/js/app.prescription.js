@@ -57,51 +57,9 @@ app.prescription.load = function(forceReboot) {
             console.log('PRESCRIPTION data below:');
 			console.log(res);
      
-			var hasPrescriptions = false;
-            var str = '';
-			if (res.items) {
-				str += '<ul>'; 
-				$.each(res.items, function(k, v) { 
-					//console.log('PRESCRIPTION '+k+' | '+v.prescription_date);
-					
-					// we exclude prescription imported
-					if ((v.prescription_source == '' || v.prescription_source == 'mobile') && v.attachment_type != 'import') {
-						var title = '';
-						title = 'Ordonnance du '+v.prescription_date;
-						var description = '';
-						
-						if (v.status == app.prescription.constant.STATUS_RECEIPT_ATTACHMENT)  description += 'Ordonnance scannée'; 
-						else if (v.status == app.prescription.constant.STATUS_PENDING) description += 'En cours de préparation';
-						else if (v.status == app.prescription.constant.STATUS_LIVE) description += 'Ordonnance validée';
-						else if (v.status == app.prescription.constant.STATUS_DELIVERY_READY) description += 'Commande disponible en pharmacie';
-						
-						
-						var doctor = '';
-						if (v.prescription_doctor) doctor = v.prescription_doctor;
-						else doctor = 'Prescripteur non renseigné';
-						str += '<li><a href="/frames/treatments.html?nocache=1" class="item-link item-content">';
-						str += '<div class="item-media"><i class="mhb-traitement"></i></div>';
-						str += '<div class="item-inner clean">';
-						str += '<div class="item-title-row"><div class="item-title">'+title+'</div></div>';
-						str += '<div class="item-subtitle">'+doctor+'</div>';
-						str += '<div class="item-text">'+description+'</div>';
-						str += '</div>';
-						str += '</a></li>';
-							
-						hasPrescriptions = true;
-						
-						objUserPrescriptions[k] = v;
-					}
-				});  
-				str += '</ul>'; 
-			}
-			
-			if (!hasPrescriptions) str = 'Aucune ordonnance';
-			
-			if (str != '') $('#prescription-list').html(str);
-                            
-            //mofLoading(false); 
-         
+			if (res.items) app.prescription.displayPrescriptions(res.items)
+				          
+            //mofLoading(false);          
         },
         error: function(jqXHR, textStatus, errorThrown) {
 			//mofLoading(false);  
@@ -113,6 +71,61 @@ app.prescription.load = function(forceReboot) {
            
     return true;
 };
+
+//display prescriptions list
+app.prescription.displayPrescriptions = function(items) {
+	console.log('displayPrescriptions total='+Object.keys(items).length);
+	
+	var hasPrescriptions = false;
+    var str = '';
+	if (items) {
+		str += '<ul>'; 
+		$.each(items, function(k, v) { 
+			//console.log('PRESCRIPTION '+k+' | '+v.prescription_date);
+					
+			// we exclude prescription imported
+			if ((v.prescription_source == '' || v.prescription_source == 'mobile') && v.attachment_type != 'import') {
+				var title = '';
+				title = 'Ordonnance du '+v.prescription_date;
+				var description = '';
+						
+				if (v.status == app.prescription.constant.STATUS_RECEIPT_ATTACHMENT)  description += 'Ordonnance scannée'; 
+				else if (v.status == app.prescription.constant.STATUS_PENDING) description += 'En cours de préparation';
+				else if (v.status == app.prescription.constant.STATUS_LIVE) description += 'Ordonnance validée';
+				else if (v.status == app.prescription.constant.STATUS_DELIVERY_READY) description += 'Commande disponible en pharmacie';
+						
+				var icon_class = 'mhb-traitement';
+				if (v.status == app.prescription.constant.STATUS_DELIVERY_READY) icon_class = 'mhb-traitement-ready';
+				
+				var doctor = '';
+				if (v.prescription_doctor) doctor = v.prescription_doctor;
+				else doctor = 'Prescripteur non renseigné';
+				//str += '<li><a href="/frames/treatments.html?nocache=1" class="item-link item-content">';
+				str += '<li><div class="item-content">';
+				str += '<div class="item-media"><i class="'+icon_class+'"></i></div>';
+				str += '<div class="item-inner clean">';
+				str += '<div class="item-title-row"><div class="item-title">'+title+'</div></div>';
+				str += '<div class="item-subtitle">'+doctor+'</div>';
+				str += '<div class="item-text">'+description+'</div>';
+				str += '</div>';
+				str += '</div></li>';
+				//str += '</a></li>';
+							
+				hasPrescriptions = true;
+						
+				objUserPrescriptions[k] = v;
+			}
+		});  
+		str += '</ul>'; 
+	}
+			
+	if (!hasPrescriptions) str = 'Aucune ordonnance';
+			
+	dbAppUserPrescriptions.set(objUserPrescriptions);
+			
+	if (str != '') $('#prescription-list').html(str);
+	                            
+}
 
 //Success callback
 app.prescription.win = function(r) {    
@@ -343,7 +356,7 @@ app.prescription.validPagePrescription = function() {
 	 //localStorage.clear();
   } else {
      navigator.notification.alert(
-            'Take a Picture of Your prescription',  // message
+            'Veuillez prendre une photo de votre ordonnance',  // message
             app.prescription.alertDismissed,         // callback
             'Prescription',            // title
             'Ok'                  // buttonName

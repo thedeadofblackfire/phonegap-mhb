@@ -98,6 +98,76 @@ app.treatments.navigatePageTreatment = function(delivery) {
   
 }; 
 
+// detect next delivery scheduling (YYYY-MM-DD HH:MM:SS or false)
+app.treatments.detectNextDelivery = function() {
+	console.log('detectNextDelivery');
+	//console.log(objUserTreatments);
+	
+	var info = {};      
+	  
+	var today = new Date();
+	var key_day = app.date.formatday(today);
+	//key_day = '2016-11-25';
+	info.str_day = key_day;
+    
+	var hh  = today.getHours().toString();  
+	var mm  = today.getMinutes().toString();           
+                            
+	var str_time = '' + (hh[1]?hh:"0"+hh[0]) + (mm[1]?mm:"0"+mm[0]);
+		
+	var time = parseInt(str_time, 10);		
+	//console.log('time '+time);
+	info.time = time;
+
+	// detect if custom section
+	if (app_settings.pattern_section && Object.keys(app_settings.pattern_section).length > 0) {
+			//console.log('pattern_section');
+			//console.log(app_settings.pattern_section);
+			Object.keys(app_settings.pattern_section).forEach(function(key, item) {
+				var section_start = parseInt(app_settings.pattern_section[key]['time_start'], 10);
+				var section_end = parseInt(app_settings.pattern_section[key]['time_end'], 10);
+				//console.log('section='+app_settings.pattern_section[key]['section']+' start='+section_start+' end='+section_end);
+				if (time >= section_start && time < section_end) {
+					info.current_section = key;
+					info.exist_day_object = (objUserTreatments[key_day]) ? true : false;
+					
+					var code = ''+app_settings.pattern_section[key]['time_code'];
+					info.code = code;
+					info.delivery_dt = key_day+' '+code.substr(0,2)+':'+code.substr(2,2)+':00';
+					info.delivery_confirmed = false;
+					info.delivery_item = false;
+					
+					if (objUserTreatments[key_day]) {
+						info.delivery_item = objUserTreatments[key_day].children[info.delivery_dt];
+						if (info.delivery_item) {
+							// check if already confirmed on object
+							if (info.delivery_item.status >=5 || info.delivery_item.confirmed_by_patient) {
+								// detect next delivery pending
+								info.delivery_confirmed = true;
+								if (code == '2200') {
+									info.current_section = 'morning';
+									var next = new Date(today.getTime());
+									next = new Date(next.setDate(next.getDate() + 1));
+									key_day = app.date.formatday(next);				
+								} else if (code == '0800') info.current_section = 'noon';
+								else if (code == '1200') info.current_section = 'evening';
+								else if (code == '1900') info.current_section = 'night';
+								
+								info.delivery_dt = key_day+' '+app_settings.pattern_section[info.current_section]['time_code'].substr(0,2)+':'+app_settings.pattern_section[info.current_section]['time_code'].substr(2,2)+':00';
+								info.delivery_item = objUserTreatments[key_day].children[info.delivery_dt];
+								if (!info.delivery_item) info.delivery_item = false;
+							}
+						} else {
+							info.delivery_item = false;
+						}
+					}
+				}
+			});
+	}
+    
+	return info;
+
+}
 
 app.treatments.displayPageHome = function(page)
 {        
@@ -110,13 +180,28 @@ app.treatments.displayPageHome = function(page)
         console.log('query id='+delivery);
              
         info_date = app.date.formatDateToObject(delivery);
-                	
-		var description = info_date.label_current_full+'<br>'+'Aucun traitement à prendre';
-		//'Aucun traitement à prendre';					
+              
+		// calculate next delivery			  
+		var info_delivery = app.treatments.detectNextDelivery();
+		console.log(info_delivery);
+		
+		var description = '';
+		//description = info_date.label_current_full;
+		//description = info_date.label_current_taking+' '+info_date.label_year;
+		description = '<b>'+info_date.label_current_taking+'</b><br/>';
+		
+		if (info_delivery && info_delivery.delivery_item) {
+			description += 'Prochaine prise à '+info_delivery.delivery_dt.substr(11,5);
+		} else {
+			description += 'Aucun traitement à prendre';
+		}
+					
 		$('#observance_home_description').html('<p style="text-align:center;">'+description+'</p>');  
-
-		// @todo calculate next delivery
-				
+	
+		// display prescriptions list
+		if (Object.keys(objUserPrescriptions).length > 0) {
+			app.prescription.displayPrescriptions(objUserPrescriptions);
+		}			
 				
 		//$('#menu_alert').addClass('menu-alert-focus'); // icon focus in red color
 		
@@ -738,7 +823,8 @@ app.treatments.displayPageTaking = function(page) {
         var delivery_dt = page.query.delivery_dt;
         if (delivery_dt === undefined) {
                 d = new Date();
-                //delivery_dt = app.date.formatyyyymmdd(d); // a revoir ici detecter date du jour et prise à venir
+                //delivery_dt = app.date.formatyyyymmdd(d); 
+				// @todo a revoir ici detecter date du jour et prise à venir
 				delivery_dt = '2016-11-25 19:00:00';
         }
 		var isReminder = page.query.reminder || false;  
@@ -828,17 +914,12 @@ app.treatments.displayPageTaking = function(page) {
 		
 		//$('.detail').html(html_detail); 
 		 
-
         var data = {};   
 		data.html_detail = html_detail;
 		data.html_delivery_title = html_delivery_title;
         data.info_date = info_date;
 		data.button_valid = html_button;
-        //data.width = app.treatments.calculeWidth();
-        //data.pill = app.treatments.renderPill(data.width);
-		
-        //$('body').i18n();
-      
+	
         // And insert generated list to page content
         var content = $$(page.container).find('.page-content').html();       
         content = fwk.render(content, data, false);      
@@ -893,7 +974,11 @@ app.treatments.displayPageTaking = function(page) {
 				success:function(res){                    
 					console.log(res);
 			 	 
-					// @todo flag drug status prise to not display again
+					// flag drug status prise to not display again		
+					var key_day = delivery_dt
+				 	var delivery_item = objUserTreatments[day].children[delivery_dt];
+					if (delivery_item) delivery_item.confirmed_by_patient = true;
+					dbAppUserTreatments.set(objUserTreatments);
 				 
 				   	// go back home
 					mainView.router.loadPage('index.html?nocache=1');
@@ -909,10 +994,10 @@ app.treatments.displayPageTaking = function(page) {
 			  
         });
                 
-
         return true;
 };
     
+// not used, for next release
 app.treatments.calculeWidth = function() {
                 var width = $(document).width(); //$(window).width();
                 var height = $(document).height();
@@ -931,12 +1016,14 @@ app.treatments.calculeWidth = function() {
                return width;
 };
 
+// not used, for next release
 app.treatments.respondPill = function() { 
                 var width = app.treatments.calculeWidth();                
                 var str = app.treatments.renderPill(width);
                 $('.pill').html(str);
 };
             
+// not used, for next release
 app.treatments.renderPill = function(width) {   
             console.log('renderPill width='+width);
             var config = {
@@ -1022,6 +1109,7 @@ app.treatments.renderPill = function(width) {
             //$('.pill').html(str);
 };
 
+// not used, for next release
 app.treatments.viewPill = function(type) {
     var title;
     if (type === 'night') {

@@ -104,6 +104,15 @@ app.date.formatyyyymmdd = function(d) {
     //return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
 };
 
+// today to YYYY-MM-DD
+app.date.formatday = function(d) {         
+    var yyyy = d.getFullYear().toString();                                    
+    var mm = (d.getMonth()+1).toString(); // getMonth() is zero-based         
+    var dd  = d.getDate().toString();             
+                            
+    return '' + yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+};
+
 app.date.getTodayTime = function() {
 	// get today current time
     var d = new Date();
@@ -147,6 +156,7 @@ app.date.formatDateToObject = function(d) {
     var dd = current.getDate().toString();
     info.label_night_day = (next.getDate().toString()[1]?next.getDate().toString():"0"+next.getDate().toString()[0]);
     info.label_current_day = app.date.calendarTranslate.dayNamesShort[current.getDay()];
+	info.label_year = today.getFullYear().toString();
   
     info.current_section = 'archive';
     if (d === info.str_today) {        
@@ -167,7 +177,7 @@ app.date.formatDateToObject = function(d) {
 			Object.keys(app_settings.pattern_section).forEach(function(key, item) {
 				var section_start = parseInt(app_settings.pattern_section[key]['time_start'], 10);
 				var section_end = parseInt(app_settings.pattern_section[key]['time_end'], 10);
-				console.log('section='+app_settings.pattern_section[key]['section']+' start='+section_start+' end='+section_end);
+				//console.log('section='+app_settings.pattern_section[key]['section']+' start='+section_start+' end='+section_end);
 				if (time >= section_start && time < section_end) info.current_section = key;
 			});
 		}
