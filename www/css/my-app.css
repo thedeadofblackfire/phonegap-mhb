@@ -456,3 +456,5 @@ span.navbar-logo {
 .clean:before,.clean:after {
    content: none;
 }
+
+.tabbar {min-height:56px}
