@@ -395,6 +395,27 @@ function initFramework() {
 		if (page.name === 'network') {
 			console.log('network page');
 			
+			var network_pharmacy_description = '';
+			if (objUser.office.office_street) network_pharmacy_description += objUser.office.office_street;
+			if (objUser.office.office_zip) network_pharmacy_description += ', '+objUser.office.office_zip;
+			if (objUser.office.office_city) network_pharmacy_description += ' '+objUser.office.office_city;
+			if (objUser.office.office_phone) network_pharmacy_description += '<br/>'+objUser.office.office_phone;
+			//if (objUser.office.office_email) network_pharmacy_description += '<br/>'+objUser.office.office_email;
+		
+			if (objUser.office.office_name) $$('#pharmacy_name').html(objUser.office.office_name);
+			if (objUser.office.office_contact) $$('#pharmacy_contact').html(objUser.office.office_contact);
+			if (network_pharmacy_description) $$('#pharmacy_description').html(network_pharmacy_description);				
+		
+			if (objUser.patient_info.doctor_name) $$('#doctor_name').html(objUser.patient_info.doctor_name);
+			if (objUser.patient_info.doctor_phone) $$('#doctor_phone').html(objUser.patient_info.doctor_phone);
+		
+			if (objUser.patient_info.nurse_name) $$('#nurse_name').html(objUser.patient_info.nurse_name);
+			if (objUser.patient_info.nurse_phone) $$('#nurse_phone').html(objUser.patient_info.nurse_phone);
+		
+			if (objUser.patient_info.helping_name) $$('#helping_name').html(objUser.patient_info.helping_name);
+			if (objUser.patient_info.helping_phone) $$('#helping_phone').html(objUser.patient_info.helping_phone);
+		
+			/*
 			var data = {};   
 			data.objUser = objUser;
 			data.network_pharmacy_description = '';
@@ -411,6 +432,7 @@ function initFramework() {
 			var navcontent = $$(page.navbarInnerContainer).html();          
 			navcontent = fwk.render(navcontent, data, false);      
 			$$(page.navbarInnerContainer).html(navcontent);			
+			*/
 			
 		}
       
