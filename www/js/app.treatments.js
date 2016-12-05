@@ -663,7 +663,7 @@ app.treatments.processLocalNotification = function(data) {
 										sound: url_sound,
 										badge: 1,
 										data: {'message': 'delivery', 'delivery_dt': v_delivery.delivery_dt, 'reminder': false },                                 
-										ongoing: true,
+										//ongoing: true,
 										//icon: 'res://icon',
 										icon: 'file://img/notification_delivery.png',
 										smallIcon: 'res://ic_popup_reminder',
@@ -684,7 +684,7 @@ app.treatments.processLocalNotification = function(data) {
 										sound: url_sound,
 										badge: 1,
 										data: {'message': 'reminder', 'delivery_dt': v_delivery.delivery_dt, 'reminder': true },                                   
-										ongoing: true,
+										//ongoing: true,
 										icon: 'file://img/notification_reminder.png',
 										smallIcon: 'res://ic_popup_reminder',                             
 										at: notification_date_reminder
