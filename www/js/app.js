@@ -152,9 +152,9 @@ var app = {
         // Handle the online event
 		console.log('listen online');
 		
-		app.treatments.load();
+		app.treatments.load(true);
 	  
-		app.prescription.load();
+		app.prescription.load(true);
     },
 	checkConnection: function() {
 		var networkState = navigator.connection.type;
@@ -188,9 +188,9 @@ function initAfterLogin() {
   
   // get last prescriptions list
   if (Object.keys(objUser).length > 0) {
-	  app.treatments.load();
+	  app.treatments.load(true);
 	  
-	  app.prescription.load();
+	  app.prescription.load(true);
   }
         
 }

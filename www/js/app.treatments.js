@@ -57,19 +57,10 @@ app.treatments.load = function(forceReboot) {
         data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, last_days: last_days, page: current_treatment_page},   
         success:function(res){                    
             console.log(res);
-     
-            //var str = generatePageArchive(res);
-               
-            //mofLoading(false); 
-
-            /*
-                $.each(res.items, function(k, v) { 
-                    console.log(k+' | '+v.delivery_day);
-                });        
-            */                
-                        
-            app.treatments.processLocalNotification(res.items);
-                       
+             
+            app.treatments.processLocalNotification(res.items);                      
+			
+			//mofLoading(false); 
         },
         error: function(jqXHR, textStatus, errorThrown) {
 			//mofLoading(false);  

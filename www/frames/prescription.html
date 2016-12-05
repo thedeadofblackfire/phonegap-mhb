@@ -19,16 +19,32 @@
 		</div>	
 		-->	
 		<div class="page-content">
+			<div class="navbar" >
+				<div class="navbar-inner">
+				  <div class="left">
+					<a href="#" class="back link no-animation"><i class="icon icon-back"></i></a>
+				  </div>
+				  <div class="center sliding" style="padding-left:10%;">Mon ordonnance</div>		  
+				  <div class="right">
+				   &nbsp;   
+				  </div> 		
+				</div>
+		  </div> 
+			<!--
 			<div class="navbar">
 				<div class="navbar-inner">
 				  <div class="left">
 					<a href="#" class="back link no-animation"><i class="icon icon-back"></i>Revenir à mon traitement</a>
 				  </div>				
 				</div>
-			  </div> 
+			  </div>
+				-->			  
 	  
 			<!--<div class="content-block-title">General</div>-->
+			<br/>
+			
 			<center data-i18n="label.prescriptionpicturedescription">label.prescriptionpicturedescription</center>
+			
 			<div class="list-block tablet-inset">				
 				<div class="status"></div>
 				<form id="form-confirmrequest" name="form-confirmrequest" action="" enctype="multipart/form-data" method="POST"> 
@@ -38,11 +54,14 @@
 			
 			<!-- <a href="javascript:app.prescription.barcode();">barcode</a> -->	
 			
-			<div class="content-block">
+			<div class="content-block" style="margin-bottom:30px">
                 <p class="buttons-row">
-                   <a href="#" class="center button button-fill button-raised color-teal link no-animation send-prescription" stylex="width: 100%; text-align:center; padding:15px; background-color:#FE504F; color: #fff;" data-i18n="label.sendprescription">label.sendprescription</a>
+                   <a href="#" class="center button xbutton-fill button-raised button-submit active xcolor-teal link no-animation send-prescription" data-i18n="label.sendprescription">label.sendprescription</a>
 				</p>
             </div>
+			
+			<br/>
+			<br/>
            			
 		</div>
 		
