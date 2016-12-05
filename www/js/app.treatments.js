@@ -819,13 +819,17 @@ app.treatments.createPopupDelivery = function(delivery_dt, isReminder) {
     }
 };
 
-app.treatments.displayPageTaking = function(page) { 		
+app.treatments.displayPageTaking = function(page) { 
+		var info_delivery = app.treatments.detectNextDelivery();
+		console.log(info_delivery);
+				
         var delivery_dt = page.query.delivery_dt;
         if (delivery_dt === undefined) {
                 d = new Date();
                 //delivery_dt = app.date.formatyyyymmdd(d); 
 				// @todo a revoir ici detecter date du jour et prise à venir
-				delivery_dt = '2016-11-25 19:00:00';
+				//delivery_dt = '2016-11-25 19:00:00';		
+				if (info_delivery) delivery_dt = info_delivery.delivery_dt;				
         }
 		var isReminder = page.query.reminder || false;  
         console.log('query delivery_dt='+delivery_dt+' isReminder='+isReminder);
@@ -905,7 +909,7 @@ app.treatments.displayPageTaking = function(page) {
 			
 		}
 			
-		if (html_detail == '') html_detail = '<center>'+i18n.t('treatments.notakingmedication')+'</center>';
+		if (html_detail == '') html_detail = '<center>'+i18n.t('treatments.notakingmedication')+'</center>'; //treatments.nocorrectime
 		else { 
 			html_detail = '<ul id="detail">'+html_detail+'</ul>';
 			html_button = '<button id="btnTakingValid" class="button button-raised xxxbutton-big xbutton-fill button-submit active"><i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète</button>';

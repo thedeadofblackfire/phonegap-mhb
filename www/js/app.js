@@ -406,13 +406,17 @@ function initFramework() {
 			if (objUser.office.office_contact) $$('#pharmacy_contact').html(objUser.office.office_contact);
 			if (network_pharmacy_description) $$('#pharmacy_description').html(network_pharmacy_description);				
 		
+			var unknown = 'Non défini dans votre dossier';
 			if (objUser.patient_info.doctor_name) $$('#doctor_name').html(objUser.patient_info.doctor_name);
+			else $$('#doctor_name').html(unknown);
 			if (objUser.patient_info.doctor_phone) $$('#doctor_phone').html(objUser.patient_info.doctor_phone);
 		
 			if (objUser.patient_info.nurse_name) $$('#nurse_name').html(objUser.patient_info.nurse_name);
+			else $$('#nurse_name').html(unknown);
 			if (objUser.patient_info.nurse_phone) $$('#nurse_phone').html(objUser.patient_info.nurse_phone);
 		
 			if (objUser.patient_info.helping_name) $$('#helping_name').html(objUser.patient_info.helping_name);
+			else $$('#helping_name').html(unknown);
 			if (objUser.patient_info.helping_phone) $$('#helping_phone').html(objUser.patient_info.helping_phone);
 		
 			/*

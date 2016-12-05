@@ -23,7 +23,8 @@
         "treatments": "Traitements",
         "report": "Rapport",
         "nextdelivery": "Prochain sachet",
-        "notakingmedication": "Aucune prise de médicament prévu"
+        "notakingmedication": "Aucune prise de médicament prévu",
+		"nocorrectime": "Ce n'est pas encore le moment de prendre vos médicaments"
     },
     "description":
     {
