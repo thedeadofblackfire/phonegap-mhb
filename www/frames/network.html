@@ -15,83 +15,74 @@
 			</div>
 		</div> 
 
-         
-              <div class="list-block">
-               <ul>  
-                  <li>
-                    <div class="item-content">
-                      <div class="item-inner">
-                        <div class="item-title label"  data-i18n="label.availability">Online Status</div>
-                        <div class="item-input" align="right">
-                          <label class="label-switch">
-                            <input type="checkbox" name="toggleswitchremotechat" id="toggleswitchremotechat" value="On" checked >
-							<div class="checkbox"></div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </li>          
-                  
-                </ul>
-              </div> 
-                <!--
-                <br><br>
-			   <div style="text-align:center" data-controltype="image" class="topband">               
-				  <i class="icon size-64 ion-monitor"></i>
-                 </div>
-                 -->
-                 
-                 <!--  <li class="callbutton disabled" data-userid="1"><a href="#">Super admin</a></li> -->
-                 
-                 <div class="content-block-title">Contacts</div>
-    <div class="list-block">
-      <ul>
-        <li class="item-content">
-          <div class="item-media"><i class="icon size-24 ion-ios7-circle-filled" style="color:#4CD964"></i></div>
-          <div class="item-inner">
-            <div class="item-title">Pharmacie de la place</div>
-            <div class="item-after"><a href="#" data-userid="x4z8binv6fps38y1" class="button button-small button-submit callbutton"><i class="ion-ios7-videocam"></i> Video Call</a></div>
-          </div>
-        </li>
-        <li class="item-content">
-          <div class="item-media"><i class="icon size-24 ion-ios7-circle-filled" style="color:#9797A6"></i></div>
-          <div class="item-inner">
-            <div class="item-title">Docteur higelin</div>
-            <div class="item-after">Offline <!--<a href="#" id="btnLogin" class="button button-small"><i class="ion-ios7-chatbubble"></i> Send Message</a> --></div>
-          </div>
-        </li>
+        <div class="content-block">
+			<div id="network-list" class="list-block media-list">	
+			    <ul>
+					<li>
+						<div class="item-content">
+							<div class="item-media">
+								<img src="img/svg/network_pharmacy.svg" width="64">
+							</div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">{ objUser.office.office_name}</div>
+									<!--<div class="item-after"></div>-->
+								</div>
+								<div class="item-subtitle">{ objUser.office.office_contact }</div>
+								<div class="item-text">{ network_pharmacy_description }</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-media">
+								<img src="img/svg/network_doctor.svg" width="64">
+							</div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Médecin traitant</div>
+									<!--<div class="item-after"></div>-->
+								</div>
+								<div class="item-subtitle">{ objUser.patient_info.doctor_name }</div>
+								<div class="item-text">{ objUser.patient_info.doctor_phone }</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-media">
+								<img src="img/svg/network_nurse.svg" width="64">
+							</div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Infirmier</div>
+									<!--<div class="item-after"></div>-->
+								</div>
+								<div class="item-subtitle">{ objUser.patient_info.nurse_name }</div>
+								<div class="item-text">{ objUser.patient_info.nurse_phone }</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-media">
+								<img src="img/svg/network_helping.svg" width="64">
+							</div>
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">Famille</div>
+									<!--<div class="item-after"></div>-->
+								</div>
+								<div class="item-subtitle">{ objUser.patient_info.helping_name }</div>
+								<div class="item-text">{ objUser.patient_info.helping_phone }</div>
+							</div>
+						</div>
+					</li>
+				</ul>
 
-      </ul>
-      <div class="list-block-label">
-      Your pharmacist offers you this feature to make a video or phone call with him.
-      <p>Your status needs to be online to accept or decline video or phone calls requested by your health guardians.</p>
-      </div>
-    </div>
-    
-				<!-- 
-                <form id="loginForm" method="POST" class="">
-                <div class="list-block inset">
-                <ul>   
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-email"></i></div>
-                      <div class="item-inner">
-                        <div class="item-input">
-                          <input type="email" name="username" id="username" placeholder="Contact info here"/>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  
-                </ul>
-              </div>
-              <div class="content-block">                      
-                  <p><a href="#" id="btnLogin" class="button button-big button-submit"><i class="ion-ios7-videocam"></i> Video Call</a></p>              
-              </div>
-              
-              </form>
-              -->
-              
+            </div>
+	    </div>
+          
     </div>
   </div>
 </div>

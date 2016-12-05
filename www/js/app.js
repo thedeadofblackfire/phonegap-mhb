@@ -370,11 +370,33 @@ function initFramework() {
         }
                
 
-        if (page.name === 'profile'){
+        if (page.name === 'profile') {
             console.log('this is profile');
             //console.log('login.html pageinit'); 
             mainView.loadPage('frames/profile.html');       
         }
+		
+		if (page.name === 'network') {
+			console.log('network page');
+			
+			var data = {};   
+			data.objUser = objUser;
+			data.network_pharmacy_description = '';
+			if (objUser.office.office_street) data.network_pharmacy_description += objUser.office.office_street;
+			if (objUser.office.office_zip) data.network_pharmacy_description += ', '+objUser.office.office_zip;
+			if (objUser.office.office_city) data.network_pharmacy_description += ' '+objUser.office.office_city;
+			if (objUser.office.office_phone) data.network_pharmacy_description += '<br/>'+objUser.office.office_phone;
+			//if (objUser.office.office_email) data.network_pharmacy_description += '<br/>'+objUser.office.office_email;
+		
+			var content = $$(page.container).find('.page-content').html();       
+			content = fwk.render(content, data, false);      
+			$$(page.container).find('.page-content').html(content);
+			
+			var navcontent = $$(page.navbarInnerContainer).html();          
+			navcontent = fwk.render(navcontent, data, false);      
+			$$(page.navbarInnerContainer).html(navcontent);
+			
+		}
       
 
         if (page.name === 'treatments') {                  
