@@ -6,6 +6,7 @@ var info_date = {};
 var current_treatment_page = 0;
 var current_treatment_report_page = 0;
 var objSessionTreatments = {};
+var isProcessingTreatments = false;
 
 // INIT TREATMENTS
 var dbAppUserTreatments = dbAppUserTreatments || fwkStore.DB("user_treatments");
@@ -38,37 +39,47 @@ app.treatments.init = function() {
 // load last days of treatments
 app.treatments.load = function(forceReboot) {
 	var forceReboot = forceReboot || false;    
+	var doAjax = true;
 	
-    console.log('TREATMENTS - loadTreatment '+forceReboot);
+    console.log('TREATMENTS - loadTreatment force='+forceReboot+' processing='+isProcessingTreatments);
    
     // show loading icon
     //mofLoading(true);
       
-    if (forceReboot) current_treatment_page = 0;
+    if (forceReboot) {
+		current_treatment_page = 0;
+		if (!isProcessingTreatments) isProcessingTreatments = true;
+		else doAjax = false;
+	}
 	
     current_treatment_page++;
     var last_days = 28; // 7
 
 	//https://vendor.eureka-platform.com/api/mobile/gettreatment?office_seq=1000&patient_user_seq=21ea938c29f24fcd9eaa8f598f2f11e5&last_days=7&page=1
-    $.ajax({
-        url: app_settings.api_url+"/gettreatment",
-        datatype: 'json',      
-        type: "post",
-        data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, last_days: last_days, page: current_treatment_page},   
-        success:function(res){                    
-            console.log(res);
-             
-            app.treatments.processLocalNotification(res.items);                      
-			
-			//mofLoading(false); 
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-			//mofLoading(false);  
-            console.log('Error loading datas, try again!');
-			console.log(textStatus);
-			console.log(errorThrown);
-        }
-    });
+	if (!forceReboot || (forceReboot && doAjax)) {
+		$.ajax({
+			url: app_settings.api_url+"/gettreatment",
+			datatype: 'json',      
+			type: "post",
+			data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, last_days: last_days, page: current_treatment_page},   
+			success:function(res){ 
+				console.log('gettreatment');
+				console.log(res);
+				 
+				app.treatments.processLocalNotification(res.items);   
+
+				isProcessingTreatments = false;				
+				
+				//mofLoading(false); 
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				//mofLoading(false);  
+				console.log('Error loading datas, try again!');
+				console.log(textStatus);
+				console.log(errorThrown);
+			}
+		});
+	}
            
     return true;
 };

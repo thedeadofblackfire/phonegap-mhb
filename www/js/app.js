@@ -180,6 +180,7 @@ var app = {
 // --
 
 function initAfterLogin() {
+  console.log('initAfterLogin');
   doRefresh = true;
                      		
   //language
