@@ -846,6 +846,8 @@ app.treatments.displayPageTaking = function(page) {
 		var html_detail = '';			
 		var html_delivery_title = info_date.label_current_taking;
 		var html_button = '';
+		
+		var container_reference = '';
 				
 	    var day = delivery_dt.substr(0,10);
 		if (objUserTreatments[day]) {
@@ -904,7 +906,7 @@ app.treatments.displayPageTaking = function(page) {
 									html_detail += '</label>';
 									html_detail += '</li>';
 									
-							  
+									if (container_reference == '' && drug_item.container_reference) container_reference = drug_item.container_reference;
 								});
 				});				
 										   
@@ -988,7 +990,7 @@ app.treatments.displayPageTaking = function(page) {
 				url: app_settings.api_url+"/settreatmentevent",
 				datatype: 'json',      
 				type: "post",
-				data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, device_serial: window.localStorage["device_serial"], delivery_dt: delivery_dt, drugs: sList, reminder: isReminder},   
+				data: {office_seq: objUser.office.office_seq, patient_user_seq: objUser.uuid, device_serial: window.localStorage["device_serial"], delivery_dt: delivery_dt, drugs: sList, reminder: isReminder, container_reference: container_reference},   
 				success:function(res){                    
 					console.log(res);
 			 	 
