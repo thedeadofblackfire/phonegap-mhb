@@ -122,11 +122,14 @@ app.treatments.detectNextDelivery = function() {
 					info.current_section = key;
 					info.exist_day_object = (objUserTreatments[key_day]) ? true : false;
 					
+					var time_early = parseInt(''+app_settings.pattern_section[key]['time_early'], 10);
 					var code = ''+app_settings.pattern_section[key]['time_code'];
 					info.code = code;
 					info.delivery_dt = key_day+' '+code.substr(0,2)+':'+code.substr(2,2)+':00';
 					info.delivery_confirmed = false;
 					info.delivery_item = false;
+					info.time_early = false;
+					if (time >= time_early) info.time_early = true;
 					
 					if (objUserTreatments[key_day]) {
 						info.delivery_item = objUserTreatments[key_day].children[info.delivery_dt];
@@ -815,12 +818,14 @@ app.treatments.displayPageTaking = function(page) {
 		console.log(info_delivery);
 				
         var delivery_dt = page.query.delivery_dt;
+		var delivery_by_notification = true;
         if (delivery_dt === undefined) {
                 d = new Date();
                 //delivery_dt = app.date.formatyyyymmdd(d); 
 				// @todo a revoir ici detecter date du jour et prise à venir
 				//delivery_dt = '2016-11-25 19:00:00';		
 				if (info_delivery) delivery_dt = info_delivery.delivery_dt;				
+				delivery_by_notification = false;
         }
 		var isReminder = page.query.reminder || false;  
         console.log('query delivery_dt='+delivery_dt+' isReminder='+isReminder);
@@ -836,9 +841,9 @@ app.treatments.displayPageTaking = function(page) {
 			var delivery_item = objUserTreatments[day].children[delivery_dt];
 			console.log(delivery_item);
 
-			if (delivery_item) {	
+			if (delivery_item) {				
 				// cancel le rappel si ce n'est pas le rappel with suffixe 9
-				if (!isReminder) {
+				if ((delivery_by_notification && !isReminder) || info_delivery.time_early) {
 					var notification_reminder_id = '9' + delivery_item.delivery_day + delivery_item.delivery_time; 		
 					app.treatments.localNotificationCancel(notification_reminder_id);
 				}
@@ -903,8 +908,15 @@ app.treatments.displayPageTaking = function(page) {
 		if (html_detail == '') html_detail = '<center>'+i18n.t('treatments.notakingmedication')+'</center>'; //treatments.nocorrectime
 		else { 
 			html_detail = '<ul id="detail">'+html_detail+'</ul>';
-			html_button = '<button id="btnTakingValid" class="button button-raised xxxbutton-big xbutton-fill button-submit active"><i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète</button>';
-        
+			
+			// not allow to display prise before 1/2h
+			var disabled_button = '';
+			if (!info_delivery.time_early) {									
+			    disabled_button = 'disabled';
+				html_detail += '<br/><center><small>'+i18n.t('treatments.nocorrectime')+'</small></center>'
+			}
+			html_button = '<button id="btnTakingValid" '+disabled_button+' class="button '+disabled_button+' button-raised xxxbutton-big xbutton-fill button-submit active"><i class="material-icons vertical-align-middle padding-bottom-3">done</i> Valider prise complète</button>';
+			        
 		}
 		
 		//$('.detail').html(html_detail); 
