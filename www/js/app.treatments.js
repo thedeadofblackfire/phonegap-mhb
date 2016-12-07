@@ -647,7 +647,7 @@ app.treatments.processLocalNotification = function(data) {
 								var notification_title = 'Valider la prise de '+v_delivery.display_delivery_time; //Reminder
 								var notification_message = "C'est l'heure de prendre vos médicaments!";
 					   
-								if (v_delivery.status === app.treatments.constant.STATUS_INPROGRESS && now > notification_date.getTime()) {
+								if ((v_delivery.status === app.treatments.constant.STATUS_COMPLETED) || (v_delivery.status === app.treatments.constant.STATUS_INPROGRESS && now > notification_date.getTime())) {
 									console.log('Exclude '+notification_id + ' | ' + notification_title);
 									return true;
 								}
